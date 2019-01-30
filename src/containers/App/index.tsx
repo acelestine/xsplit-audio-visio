@@ -1,27 +1,23 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as React from 'react';
+import xjs from 'xjs-framework/dist/xjs-es2015';
 
-class App extends Component {
+import SourcePlugin from '../../pages/SourcePlugin';
+import Configurator from '../../pages/Configurator';
+
+class App extends React.Component {
+  state = {
+    isSourceProps: false,
+  };
+
+  componentDidMount() {
+    xjs.ready().then(() => {
+      this.setState({ isSourceProps: xjs.Environment.isSourceProps() });
+    });
+  }
+
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+    const { isSourceProps } = this.state;
+    return <div>{isSourceProps ? <Configurator /> : <SourcePlugin />}</div>;
   }
 }
 
