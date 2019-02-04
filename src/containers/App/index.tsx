@@ -10,9 +10,15 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    xjs.ready().then(() => {
-      this.setState({ isSourceProps: xjs.Environment.isSourceProps() });
-    });
+    if (window.external.isXSplit) {
+      xjs.ready().then(() => {
+        this.setState({ isSourceProps: xjs.Environment.isSourceProps() });
+      });
+    } else {
+      // Check has route
+      const hash = location.hash;
+      this.setState({ isSourceProps: hash === '#sourceprops' });
+    }
   }
 
   render() {

@@ -7,7 +7,7 @@ const Configuration = () => {
   const [initialized, setInitialize] = useState(false);
 
   useEffect(() => {
-    if (initialized === false) {
+    if (initialized === false && window.external.isXSplit) {
       const propsWindow = xjs.SourcePropsWindow.getInstance();
 
       propsWindow.useTabbedWindow({
