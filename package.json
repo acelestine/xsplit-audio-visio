@@ -25,7 +25,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && node tools/package.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -37,5 +37,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "htmlencode": "^0.0.4"
+  }
 }
