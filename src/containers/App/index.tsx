@@ -1,8 +1,11 @@
 import * as React from 'react';
 import xjs from 'xjs-framework/dist/xjs-es2015';
+import { ThemeProvider } from 'react-jss';
 
 import SourcePlugin from '../../pages/SourcePlugin';
 import Configurator from '../../pages/Configurator';
+
+import theme from '../../themes/default';
 
 class App extends React.Component {
   state = {
@@ -23,7 +26,11 @@ class App extends React.Component {
 
   render() {
     const { isSourceProps } = this.state;
-    return <div>{isSourceProps ? <Configurator /> : <SourcePlugin />}</div>;
+    return (
+      <ThemeProvider theme={theme}>
+        {isSourceProps ? <Configurator /> : <SourcePlugin />}
+      </ThemeProvider>
+    );
   }
 }
 
