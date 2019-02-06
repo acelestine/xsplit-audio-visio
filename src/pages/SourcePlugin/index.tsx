@@ -1,7 +1,22 @@
 import * as React from 'react';
-// import xjs from 'xjs-framework/dist/xjs-es2015';
 
 const { useState, useEffect } = React;
+
+function getMetaContent() {
+  if (location.origin !== 'file://') {
+    return location.origin;
+  }
+
+  const captured = /.+\/([\w\W]+)\.(\w+)/gm.exec(location.href);
+
+  if (captured) {
+    const [fullPath, filename, extension] = captured;
+
+    return `./${filename}.${extension}`;
+  }
+
+  return '';
+}
 
 const SourcePlugin = () => {
   const [initialized, setInitialize] = useState(false);
@@ -10,7 +25,7 @@ const SourcePlugin = () => {
     if (initialized === false) {
       const meta = document.createElement('meta');
       meta.setAttribute('name', 'xsplit:config-url');
-      meta.setAttribute('content', location.origin);
+      meta.setAttribute('content', getMetaContent());
       document.head.appendChild(meta);
 
       setInitialize(true);

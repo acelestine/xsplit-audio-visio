@@ -13,7 +13,7 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    if (window.external.isXSplit) {
+    if (window.external.isXsplitShell) {
       xjs.ready().then(() => {
         this.setState({ isSourceProps: xjs.Environment.isSourceProps() });
       });
