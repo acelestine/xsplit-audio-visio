@@ -3,6 +3,8 @@ import withStyles from 'react-jss';
 import xjs from 'xjs-framework/dist/xjs-es2015';
 
 import Section from '../../components/Section';
+import Select from '../../components/Select';
+import Option from '../../components/Select/Option';
 
 // import AudioSelect from './AudioSelect';
 
@@ -42,7 +44,11 @@ const Configuration = ({ classes }: Props) => {
 
   return (
     <div className={classes.container}>
-      <Section label="General">Testing</Section>
+      <Section label="General">
+        <Select value="tester">
+          <Option value="tester">Testing</Option>
+        </Select>
+      </Section>
     </div>
   );
 };

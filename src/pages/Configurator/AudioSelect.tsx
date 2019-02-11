@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { FormGroup, HTMLSelect, IOptionProps } from '@blueprintjs/core';
+// import { FormGroup, HTMLSelect, IOptionProps } from '@blueprintjs/core';
 
 const { useState, useEffect } = React;
 
 function AudioSelect() {
   const [isInitialized, setInitialized] = useState(false);
-  const [options, setOptions] = useState(([] as unknown) as IOptionProps[]);
   const [selectedItem, setSelectedItem] = useState('');
 
   useEffect(() => {
@@ -22,7 +21,6 @@ function AudioSelect() {
             }));
 
           setInitialized(true);
-          setOptions(audioOutputs);
         });
     }
   });
@@ -31,16 +29,7 @@ function AudioSelect() {
     setSelectedItem(event.currentTarget.value);
   }
 
-  return (
-    <FormGroup label="Audio Source" labelFor="audio-source">
-      <HTMLSelect
-        id="audio-source"
-        value={selectedItem}
-        options={options}
-        onChange={handleChange}
-      />
-    </FormGroup>
-  );
+  return <div />;
 }
 
 export default AudioSelect;
