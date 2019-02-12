@@ -18,6 +18,7 @@ const styles = (theme: any) => ({
     padding: [0, 10],
     position: 'relative',
     width: '20em',
+    outline: 'none',
 
     '> label': {
       background: theme.inputBackgroundColor,
@@ -37,6 +38,8 @@ const styles = (theme: any) => ({
   },
   dropdown: {
     display: 'none',
+    position: 'absolute',
+    top: '1.8em',
 
     '&.visible': {
       display: 'block',
@@ -84,10 +87,14 @@ function Select({ classes, children, value }: Props) {
 
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     const target = event.target as HTMLDivElement;
-    console.log(target.dataset.ident);
+
     if (target.dataset.ident === 'select') {
       setExpanded(true);
     }
+  }
+
+  function handleBlur(event: React.FocusEvent) {
+    setExpanded(false);
   }
 
   // @HACK: Using datasets because we cannot use refs
@@ -95,7 +102,9 @@ function Select({ classes, children, value }: Props) {
     <div
       className={classes.container}
       onClick={handleClick}
+      onBlur={handleBlur}
       data-ident="select"
+      tabIndex={-1}
     >
       <label>{selected}</label>
 
