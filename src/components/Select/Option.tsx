@@ -10,7 +10,10 @@ export interface Props {
 const styles = (theme: any) => ({
   option: {
     color: theme.dropdownColor,
+    overflow: 'hidden',
     padding: [4, 6],
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
 
     '&:hover': {
       background: theme.dropdownBackgroundColorHover,

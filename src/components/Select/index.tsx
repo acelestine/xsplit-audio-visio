@@ -36,6 +36,9 @@ const styles = (theme: any) => ({
 
     '& > label': {
       cursor: 'pointer',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
     },
     '&:hover $arrow': {
       borderTopColor: theme.arrowColorHover,
