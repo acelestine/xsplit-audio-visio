@@ -3,8 +3,8 @@ import withStyles from 'react-jss';
 import xjs from 'xjs-framework/dist/xjs-es2015';
 
 import Section from '../../components/Section';
-import AudioSelect from './AudioSelect';
-import VisualizationSelect from './VisualizationSelect';
+import AudioSelect from './containers/AudioSelect';
+import VisualizationSelect from './containers/VisualizationSelect';
 
 interface Props {
   classes: any;

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import withStyles from 'react-jss';
 
-import Select from '../../components/Select';
-import Option from '../../components/Select/Option';
+import Select from '../../../../components/Select';
+import Option from '../../../../components/Select/Option';
 
 interface AudioOutput {
   value: string;
