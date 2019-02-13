@@ -58,6 +58,7 @@ const styles = (theme: any) => ({
     top: 'calc(1.8em + 1px)',
     left: 0,
     right: 0,
+    zIndex: 10,
 
     '&.visible': {
       display: 'block',

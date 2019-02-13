@@ -4,6 +4,7 @@ import xjs from 'xjs-framework/dist/xjs-es2015';
 
 import Section from '../../components/Section';
 import AudioSelect from './AudioSelect';
+import VisualizationSelect from './VisualizationSelect';
 
 interface Props {
   classes: any;
@@ -16,6 +17,11 @@ const styles = (theme: any) => ({
       fontSize: 12,
     },
     label: { color: theme.labelColor },
+  },
+  sectionContents: {
+    '& > div': {
+      marginBottom: '1em',
+    },
   },
 });
 
@@ -43,8 +49,9 @@ const Configuration = ({ classes }: Props) => {
 
   return (
     <div className={classes.container}>
-      <Section label="General">
+      <Section label="General" contentClassName={classes.sectionContents}>
         <AudioSelect />
+        <VisualizationSelect />
       </Section>
     </div>
   );

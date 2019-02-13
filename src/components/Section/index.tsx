@@ -1,5 +1,6 @@
 import * as React from 'react';
 import withStyles from 'react-jss';
+import cx from 'classnames';
 
 const styles = (theme: any) => ({
   container: {
@@ -7,6 +8,7 @@ const styles = (theme: any) => ({
     margin: ['0.5em', '0.8em'],
     paddingTop: '1.6em',
     position: 'relative',
+
     '& > label': {
       color: theme.labelColor,
       fontSize: '1em',
@@ -25,14 +27,15 @@ interface Props {
   children: React.ReactChild;
   classes: any;
   label: string;
+  contentClassName?: string;
 }
 
-function Section({ label, children, classes }: Props) {
+function Section({ label, children, classes, contentClassName }: Props) {
   return (
     <div className={classes.container}>
       <label>{label}</label>
 
-      <div className={classes.content}>{children}</div>
+      <div className={cx(classes.content, contentClassName)}>{children}</div>
     </div>
   );
 }

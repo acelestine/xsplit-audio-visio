@@ -1,48 +1,73 @@
 import * as React from 'react';
-// import { FormGroup, HTMLSelect, IOptionProps } from '@blueprintjs/core';
+import withStyles from 'react-jss';
 
+import Select from '../../components/Select';
+import Option from '../../components/Select/Option';
+
+import * as visualizers from '../../visualizers';
+
+interface VisualizerMetadata {
+  name: string;
+  id: string;
+  fields: any;
+}
+
+interface Visualization {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  classes: any;
+}
+
+const styles = {
+  container: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  label: {
+    paddingRight: '2.8em',
+  },
+};
 const { useState, useEffect } = React;
 
-function VisualizationSelect() {
+function VisualizationSelect({ classes }: Props) {
   const [isInitialized, setInitialized] = useState(false);
-  // const [options, setOptions] = useState(([] as unknown) as IOptionProps[]);
-  const [selectedItem, setSelectedItem] = useState('');
+  const [items, setItems] = useState(([] as unknown) as Visualization[]);
+  const [selectedItem, setSelectedItem] = useState('bars');
 
   useEffect(() => {
     if (!isInitialized) {
-      // @TODO: Confirm with @miyb if we would only want to capture audio output devices (ie. sounds from the PC)
-      navigator.mediaDevices
-        .enumerateDevices()
-        .then((devices: MediaDeviceInfo[]) => {
-          const audioOutputs = devices
-            .filter((device: MediaDeviceInfo) => device.kind === 'audiooutput')
-            .map((device: MediaDeviceInfo) => ({
-              value: device.deviceId,
-              label: device.label.replace(' (DirectShow)', ''),
-            }));
+      const options = Object.keys(visualizers).map((item: string) => {
+        const obj: VisualizerMetadata = (visualizers as any)[item];
 
-          setInitialized(true);
-          // setOptions(audioOutputs);
-        });
+        return { label: obj.name, value: obj.id };
+      });
+      setInitialized(true);
+      setItems(options);
     }
   });
 
-  function handleChange(event: React.FormEvent<HTMLSelectElement>) {
-    setSelectedItem(event.currentTarget.value);
+  function handleChange(
+    event: React.FormEvent<HTMLSelectElement>,
+    value: string
+  ) {
+    setSelectedItem(value);
   }
 
-  return <div />;
-
-  // return (
-  //   <FormGroup label="Audio Source" labelFor="audio-source">
-  //     <HTMLSelect
-  //       id="audio-source"
-  //       value={selectedItem}
-  //       options={options}
-  //       onChange={handleChange}
-  //     />
-  //   </FormGroup>
-  // );
+  return (
+    <div className={classes.container}>
+      <label className={classes.label}>Visualizer</label>
+      <Select value={selectedItem} onSelect={handleChange}>
+        {items.map(item => (
+          <Option key={item.value} value={item.value}>
+            {item.label}
+          </Option>
+        ))}
+      </Select>
+    </div>
+  );
 }
 
-export default VisualizationSelect;
+export default withStyles(styles)(VisualizationSelect);
