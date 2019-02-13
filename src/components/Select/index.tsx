@@ -5,6 +5,20 @@ import cx from 'classnames';
 
 import { Props as OptionProps } from './Option';
 
+interface Props {
+  classes: any;
+  children?:
+    | React.ReactElement<OptionProps>
+    | React.ReactElement<OptionProps>[];
+  value?: string;
+  onSelect?: (event: React.BaseSyntheticEvent, data: string) => void;
+}
+
+interface ChildValuesType {
+  value: string;
+  label: string;
+}
+
 const { useState, useEffect } = React;
 const styles = (theme: any) => ({
   container: {
@@ -15,14 +29,13 @@ const styles = (theme: any) => ({
     display: 'flex',
     height: '1.8em',
     justifyContent: 'space-between',
-    padding: [0, 10],
+    padding: [0, 7],
     position: 'relative',
-    width: '20em',
+    width: '17em',
     outline: 'none',
 
-    '> label': {
-      background: theme.inputBackgroundColor,
-      pointer: 'cursor',
+    '& > label': {
+      cursor: 'pointer',
     },
     '&:hover $arrow': {
       borderTopColor: theme.arrowColorHover,
@@ -37,9 +50,14 @@ const styles = (theme: any) => ({
     }),
   },
   dropdown: {
+    background: theme.dropdownBackgroundColor,
+    border: [1, 'solid', theme.dropdownBorderColor],
     display: 'none',
+    padding: 1,
     position: 'absolute',
-    top: '1.8em',
+    top: 'calc(1.8em + 1px)',
+    left: 0,
+    right: 0,
 
     '&.visible': {
       display: 'block',
@@ -47,21 +65,7 @@ const styles = (theme: any) => ({
   },
 });
 
-interface Props {
-  classes: any;
-  children?:
-    | React.ReactElement<OptionProps>
-    | React.ReactElement<OptionProps>[];
-  value?: string;
-  onSelect?: (event: React.BaseSyntheticEvent) => void;
-}
-
-interface ChildValuesType {
-  value: string;
-  label: string;
-}
-
-function Select({ classes, children, value }: Props) {
+function Select({ classes, children, value, onSelect }: Props) {
   const [childValues, setChildValues] = useState(
     ([] as unknown) as ChildValuesType[]
   );
@@ -87,9 +91,18 @@ function Select({ classes, children, value }: Props) {
 
   function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     const target = event.target as HTMLDivElement;
+    const closestTarget = target.closest(`.${classes.container}`);
+    const ident = target.dataset.ident;
 
-    if (target.dataset.ident === 'select') {
-      setExpanded(true);
+    if (
+      ident === 'select' ||
+      (closestTarget as HTMLElement).dataset.ident === 'select'
+    ) {
+      setExpanded(!isExpanded);
+    }
+
+    if (ident === 'option' && typeof onSelect === 'function') {
+      onSelect(event, target.dataset.value || '');
     }
   }
 

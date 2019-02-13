@@ -7,7 +7,7 @@ const styles = (theme: any) => ({
     margin: ['0.5em', '0.8em'],
     paddingTop: '1.6em',
     position: 'relative',
-    '> label': {
+    '& > label': {
       color: theme.labelColor,
       fontSize: '1em',
       position: 'absolute',

@@ -8,4 +8,9 @@ export default {
   arrowColor: '#666666',
   arrowColorHover: '#EEEEEE',
   arrowColorDisabled: '#000000',
+  dropdownColor: '#999',
+  dropdownColorHover: '#FFFFFF',
+  dropdownBackgroundColor: '#000',
+  dropdownBackgroundColorHover: '#043151',
+  dropdownBorderColor: '#555',
 };
