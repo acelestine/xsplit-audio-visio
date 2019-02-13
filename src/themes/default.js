@@ -13,4 +13,8 @@ export default {
   dropdownBackgroundColor: '#000',
   dropdownBackgroundColorHover: '#043151',
   dropdownBorderColor: '#555',
+  sliderBackgroundColor: '#2D2D2D',
+  sliderSubColor: '#013F5F',
+  sliderMainColor: '#FFF',
+  knobColor: '#FFF',
 };

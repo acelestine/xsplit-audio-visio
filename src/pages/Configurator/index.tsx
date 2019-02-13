@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import withStyles from 'react-jss';
 import xjs from 'xjs-framework/dist/xjs-es2015';
 
@@ -8,6 +10,7 @@ import VisualizationSelect from './containers/VisualizationSelect';
 
 interface Props {
   classes: any;
+  visualization: string;
 }
 
 const styles = (theme: any) => ({
@@ -57,4 +60,11 @@ const Configuration = ({ classes }: Props) => {
   );
 };
 
-export default withStyles(styles)(Configuration);
+const mapState = ({ visualizations: { selected } }: any) => ({
+  visualization: selected,
+});
+
+export default compose(
+  connect(mapState),
+  withStyles(styles)
+)(Configuration);
