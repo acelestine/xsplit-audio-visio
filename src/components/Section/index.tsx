@@ -22,7 +22,7 @@ const styles = (theme: any) => ({
     minHeight: '1em',
   },
   innerContainer: {
-    background: 'black',
+    // background: 'black', @TODO: Get the correct color from source props
     padding: '0.5em',
   },
 });

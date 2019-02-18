@@ -5,9 +5,9 @@ import withStyles from 'react-jss';
 import xjs from 'xjs-framework/dist/xjs-es2015';
 
 import Section from '../../components/Section';
-import Slider from '../../components/Slider';
 import AudioSelect from './containers/AudioSelect';
 import VisualizationSelect from './containers/VisualizationSelect';
+import CustomFields from './containers/CustomFields';
 
 interface Props {
   classes: any;
@@ -23,7 +23,7 @@ const styles = (theme: any) => ({
     label: { color: theme.labelColor },
   },
   sectionContents: {
-    '& > div': {
+    '& > div > div': {
       marginBottom: '1em',
     },
   },
@@ -56,8 +56,8 @@ const Configuration = ({ classes }: Props) => {
       <Section label="General" contentClassName={classes.sectionContents}>
         <AudioSelect />
         <VisualizationSelect />
-        <Slider knob />
       </Section>
+      <CustomFields />
     </div>
   );
 };
