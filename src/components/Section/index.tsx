@@ -21,6 +21,10 @@ const styles = (theme: any) => ({
     padding: '0.5em',
     minHeight: '1em',
   },
+  innerContainer: {
+    background: 'black',
+    padding: '0.5em',
+  },
 });
 
 interface Props {
@@ -35,7 +39,9 @@ function Section({ label, children, classes, contentClassName }: Props) {
     <div className={classes.container}>
       <label>{label}</label>
 
-      <div className={cx(classes.content, contentClassName)}>{children}</div>
+      <div className={cx(classes.content, contentClassName)}>
+        <div className={classes.innerContainer}>{children}</div>
+      </div>
     </div>
   );
 }

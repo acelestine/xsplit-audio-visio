@@ -5,6 +5,7 @@ import withStyles from 'react-jss';
 import xjs from 'xjs-framework/dist/xjs-es2015';
 
 import Section from '../../components/Section';
+import Slider from '../../components/Slider';
 import AudioSelect from './containers/AudioSelect';
 import VisualizationSelect from './containers/VisualizationSelect';
 
@@ -55,6 +56,7 @@ const Configuration = ({ classes }: Props) => {
       <Section label="General" contentClassName={classes.sectionContents}>
         <AudioSelect />
         <VisualizationSelect />
+        <Slider knob />
       </Section>
     </div>
   );
