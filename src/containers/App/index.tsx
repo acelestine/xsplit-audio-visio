@@ -20,7 +20,11 @@ class App extends React.Component {
     } else {
       // Check has route
       const hash = location.hash;
-      this.setState({ isSourceProps: hash === '#sourceprops' });
+      const isSourceProps = hash === '#sourceprops';
+      this.setState({ isSourceProps });
+
+      // Also, if it isn't isSourceProps, we should open it just to "mock" HTML Plugin <-> Source Props communication
+      window.open(`${window.location.origin}/#sourceprops`, 'sourceProps');
     }
   }
 
