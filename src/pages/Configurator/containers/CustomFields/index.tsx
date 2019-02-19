@@ -20,8 +20,18 @@ class CustomFields extends React.Component<Props> {
     this.visualizers = require('../../../../visualizers');
   }
 
-  renderSlider(id: string, ...attributes: any) {
-    return <Slider key={id} value={0} maxValue={100} knob />;
+  renderSlider(...attributes: any) {
+    const { id, range, label } = attributes;
+    const [minValue, maxValue] = range;
+
+    // @TODO: We don't use minValue for now...
+
+    return (
+      <>
+        <label>label</label>
+        <Slider key={id} value={0} maxValue={maxValue} knob />
+      </>
+    );
   }
 
   render() {

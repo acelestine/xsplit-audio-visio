@@ -4,6 +4,7 @@ export default {
   fields: [
     {
       id: 'sensitivity',
+      label: 'Sensitivity',
       type: 'slider',
       range: [0 - 99],
       step: 1,
