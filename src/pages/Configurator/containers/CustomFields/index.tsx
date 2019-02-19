@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import omit from 'lodash/omit';
 
 import store from '../../../../store';
 
+import Section from '../../../../components/Section';
 import Slider from '../../../../components/Slider';
 
 import { Visualization } from '../VisualizationSelect/interfaces';
@@ -12,14 +14,35 @@ interface Props {
 }
 
 class CustomFields extends React.Component<Props> {
+  visualizers: any;
+
+  componentDidMount() {
+    this.visualizers = require('../../../../visualizers');
+  }
+
+  renderSlider(id: string, ...attributes: any) {
+    return <Slider key={id} value={0} maxValue={100} knob />;
+  }
+
   render() {
     const { visualization } = this.props;
 
-    // TESTING!
-    const visualizers = require('../../../../visualizers');
-    console.log(visualization && visualizers[visualization.label]);
+    if (visualization && this.visualizers[visualization.label]) {
+      const { fields } = this.visualizers[visualization.label];
 
-    return <div />;
+      return (
+        <Section label="Visualization Settings">
+          {fields.map((field: any) => {
+            switch (field.type) {
+              case 'slider':
+                return this.renderSlider(omit(field, 'type'));
+            }
+          })}
+        </Section>
+      );
+    }
+
+    return null;
   }
 }
 
