@@ -1,6 +1,8 @@
 import * as React from 'react';
 import withStyles from 'react-jss';
 
+import { requestSaveConfig } from '../../../../helpers/coms';
+
 import Select from '../../../../components/Select';
 import Option from '../../../../components/Select/Option';
 
@@ -60,6 +62,7 @@ function AudioSelect({ classes }: Props) {
     value: string
   ) {
     setSelectedItem(value);
+    requestSaveConfig({ audio: value });
   }
 
   return (

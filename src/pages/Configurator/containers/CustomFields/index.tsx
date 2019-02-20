@@ -74,7 +74,6 @@ class CustomFields extends React.Component<Props> {
       return (
         <Section label="Visualization Settings">
           {fields.map((field: any) => {
-            console.log(field);
             switch (field.type) {
               case 'slider':
                 return this.renderSlider(omit(field, ['type']));

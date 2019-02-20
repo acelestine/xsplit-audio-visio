@@ -9,19 +9,23 @@ import theme from '../../themes/default';
 
 class App extends React.Component {
   state = {
+    isInitialized: false,
     isSourceProps: false,
   };
 
   componentDidMount() {
     if (window.external.isXsplitShell) {
       xjs.ready().then(() => {
-        this.setState({ isSourceProps: xjs.Environment.isSourceProps() });
+        this.setState({
+          isSourceProps: xjs.Environment.isSourceProps(),
+          isInitialized: true,
+        });
       });
     } else {
       // Check has route
       const hash = location.hash;
       const isSourceProps = hash === '#sourceprops';
-      this.setState({ isSourceProps });
+      this.setState({ isSourceProps, isInitialized: true });
 
       // Also, if it isn't isSourceProps, we should open it just to "mock" HTML Plugin <-> Source Props communication
       window.open(`${window.location.origin}/#sourceprops`, 'sourceProps');
@@ -29,7 +33,12 @@ class App extends React.Component {
   }
 
   render() {
-    const { isSourceProps } = this.state;
+    const { isSourceProps, isInitialized } = this.state;
+
+    if (!isInitialized) {
+      return null;
+    }
+
     return (
       <ThemeProvider theme={theme}>
         {isSourceProps ? <Configurator /> : <SourcePlugin />}

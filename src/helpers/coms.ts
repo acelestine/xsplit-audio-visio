@@ -15,8 +15,10 @@ interface CallbackStackType {
 const { isXsplitShell: IS_XSPLIT } = window.external;
 
 // Mutable stuff
+let configObj: any = {};
 let isSourceProps: any = null;
 let pluginInstance: any = null;
+let pluginPropsInstance: any = null;
 let callbackStack: Array<CallbackStackType> = [];
 
 async function initialize() {
@@ -27,6 +29,12 @@ async function initialize() {
   if (pluginInstance === null) {
     const Source = xjs.Source;
     pluginInstance = await Source.getCurrentSource();
+    configObj = await pluginInstance.loadConfig();
+  }
+
+  if (pluginPropsInstance === null && !isSourceProps) {
+    const SourcePluginWindow = xjs.SourcePluginWindow;
+    pluginPropsInstance = await SourcePluginWindow.getInstance();
   }
 }
 
@@ -38,7 +46,7 @@ export async function requestSaveConfig(config: any) {
   }
 
   if (IS_XSPLIT) {
-    pluginInstance.requestSaveConfig(config);
+    pluginInstance.requestSaveConfig({ ...configObj, ...config });
   } else if (window.opener) {
     window.opener.postMessage({ type: 'save-config', ...config });
   }
@@ -52,7 +60,7 @@ export async function applyConfig(config: any) {
   }
 
   if (IS_XSPLIT) {
-    pluginInstance.requestSaveConfig(config);
+    pluginInstance.applyConfig({ ...configObj, ...config });
   } else if (window.opener) {
     window.opener.postMessage({ type: 'apply-config', ...config });
   }
@@ -66,9 +74,30 @@ export async function addListener(type: string, callback: Function) {
   }
 
   if (IS_XSPLIT) {
-    pluginInstance.on(type, callback);
+    pluginPropsInstance.on(type, callback);
   } else if (window.opener) {
     callbackStack.push({ type, callback });
+  }
+}
+
+export async function removeListener(type: string, callback: Function) {
+  await initialize();
+
+  if (isSourceProps) {
+    throw new Error('mga inutil');
+  }
+
+  if (IS_XSPLIT) {
+    pluginPropsInstance.off(type, callback);
+  } else if (window.opener) {
+    const index = callbackStack.findIndex(
+      cb => cb.type === type && cb.callback === callback
+    );
+
+    callbackStack = [
+      ...callbackStack.slice(0, index),
+      ...callbackStack.slice(index + 1, callbackStack.length + 1),
+    ];
   }
 }
 

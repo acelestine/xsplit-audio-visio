@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import useConfig from './hooks/useConfig';
+
 const { useState, useEffect } = React;
 
 function getMetaContent() {
@@ -20,6 +22,7 @@ function getMetaContent() {
 
 const SourcePlugin = () => {
   const [initialized, setInitialize] = useState(false);
+  const config = useConfig();
 
   useEffect(() => {
     if (initialized === false) {
@@ -28,9 +31,14 @@ const SourcePlugin = () => {
       meta.setAttribute('content', getMetaContent());
       document.head.appendChild(meta);
 
+      // @TODO: Move the ff. stuff to `effects` or maybe explore the possibility of using custom hooks
+      window.GetPlayState = () => {};
+
       setInitialize(true);
     }
   });
+
+  console.log(config);
 
   return (
     <div style={{ background: 'black', color: 'white' }}>
