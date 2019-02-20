@@ -23,7 +23,8 @@ const styles = (theme: any) => ({
     minHeight: '1em',
   },
   innerContainer: {
-    // background: 'black', @TODO: Get the correct color from source props
+    background: theme.sectionInnerBackgroundColor,
+    border: [1, 'solid', theme.sectionInnerBorderColor],
     padding: '0.5em',
   },
 });

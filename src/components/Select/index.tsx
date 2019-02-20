@@ -33,12 +33,17 @@ const styles = (theme: any) => ({
     position: 'relative',
     width: '17em',
     outline: 'none',
+    background: theme.backgroundColor,
 
     '& > label': {
       cursor: 'pointer',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
+      color: 'white',
+    },
+    '&:hover': {
+      background: theme.inputBackgroundColorHover,
     },
     '&:hover $arrow': {
       borderTopColor: theme.arrowColorHover,

@@ -17,4 +17,6 @@ export default {
   sliderSubColor: '#013F5F',
   sliderMainColor: '#FFF',
   knobColor: '#FFF',
+  sectionInnerBackgroundColor: '#212121',
+  sectionInnerBorderColor: '#000',
 };

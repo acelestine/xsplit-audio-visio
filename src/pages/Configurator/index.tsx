@@ -19,11 +19,12 @@ const styles = (theme: any) => ({
     body: {
       background: theme.backgroundColor,
       fontSize: 12,
+      userSelect: 'none',
     },
     label: { color: theme.labelColor },
   },
   sectionContents: {
-    '& > div > div': {
+    '& > div > div:not(:last-of-type)': {
       marginBottom: '1em',
     },
   },
