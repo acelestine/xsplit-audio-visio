@@ -9,7 +9,7 @@ export default function usePluginInit(config: any) {
   const { visualizer, audio } = config;
 
   useEffect(() => {
-    console.log(visualizer);
+    console.log('visualizer', visualizer);
   }, [visualizer]);
   return config;
 }

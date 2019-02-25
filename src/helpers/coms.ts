@@ -6,6 +6,7 @@
 // behave. Gomen.
 
 import xjs from 'xjs-framework/dist/xjs-es2015';
+import { isSourceProps } from './environment';
 
 interface CallbackStackType {
   type: string;
@@ -16,7 +17,6 @@ const { isXsplitShell: IS_XSPLIT } = window.external;
 
 // Mutable stuff
 let configObj: any = {};
-let isSourceProps: any = null;
 let pluginInstance: any = null;
 let pluginPropsInstance: any = null;
 let callbackStack: Array<CallbackStackType> = [];
@@ -26,10 +26,6 @@ async function initialize() {
     return;
   }
 
-  if (isSourceProps === null) {
-    isSourceProps = xjs.Environment.isSourceProps();
-  }
-
   if (pluginInstance === null) {
     const Source = xjs.Source;
     pluginInstance = await Source.getCurrentSource();
@@ -37,7 +33,7 @@ async function initialize() {
 
   configObj = await pluginInstance.loadConfig();
 
-  if (pluginPropsInstance === null && !isSourceProps) {
+  if (pluginPropsInstance === null && !isSourceProps()) {
     const SourcePluginWindow = xjs.SourcePluginWindow;
     pluginPropsInstance = SourcePluginWindow.getInstance();
   }
@@ -46,14 +42,13 @@ async function initialize() {
 export async function requestSaveConfig(config: any) {
   await initialize();
 
-  if (!isSourceProps && IS_XSPLIT) {
+  if (!isSourceProps()) {
     throw new Error('mga mangmang');
   }
 
   if (IS_XSPLIT) {
     pluginInstance.requestSaveConfig({ ...configObj, ...config });
   } else if (window.opener) {
-    console.log({ ...config });
     window.opener.postMessage({ type: 'save-config', ...config });
   }
 }
@@ -61,7 +56,7 @@ export async function requestSaveConfig(config: any) {
 export async function applyConfig(config: any) {
   await initialize();
 
-  if (!isSourceProps && IS_XSPLIT) {
+  if (!isSourceProps()) {
     throw new Error('mga tanga');
   }
 
@@ -75,7 +70,7 @@ export async function applyConfig(config: any) {
 export async function addListener(type: string, callback: Function) {
   await initialize();
 
-  if (isSourceProps && IS_XSPLIT) {
+  if (isSourceProps() && IS_XSPLIT) {
     throw new Error('mga bobo');
   }
 
@@ -89,7 +84,7 @@ export async function addListener(type: string, callback: Function) {
 export async function removeListener(type: string, callback: Function) {
   await initialize();
 
-  if (isSourceProps && IS_XSPLIT) {
+  if (isSourceProps()) {
     throw new Error('mga inutil');
   }
 
@@ -113,7 +108,6 @@ function handleMessage(event: any) {
   const callbacks = callbackStack.filter(
     (cb: CallbackStackType) => cb.type === type
   );
-  console.log(event);
 
   callbacks.forEach((cb: CallbackStackType) => cb.callback(data));
 }

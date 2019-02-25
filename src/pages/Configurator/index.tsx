@@ -36,7 +36,7 @@ const { useState, useEffect } = React;
 
 const Configuration = ({ classes }: Props) => {
   const [initialized, setInitialize] = useState(false);
-  const { audio } = useConfig();
+  const { audio, ...config } = useConfig();
 
   useEffect(() => {
     if (initialized) {

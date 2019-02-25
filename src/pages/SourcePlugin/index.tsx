@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import useConfig from '../../hooks/useConfig';
+import usePluginInit from '../../hooks/usePluginInit';
 
 const { useState, useEffect } = React;
 
@@ -23,6 +24,7 @@ function getMetaContent() {
 const SourcePlugin = () => {
   const [initialized, setInitialize] = useState(false);
   const config = useConfig();
+  usePluginInit(config);
 
   useEffect(() => {
     if (initialized === false) {
@@ -38,7 +40,7 @@ const SourcePlugin = () => {
     }
   });
 
-  console.log(config);
+  console.log('SourcePlugin', config);
 
   return <canvas id="canvas" width={1920} height={1080} />;
 };

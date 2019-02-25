@@ -2,6 +2,7 @@ import * as React from 'react';
 import xjs from 'xjs-framework/dist/xjs-es2015';
 
 import { addListener, removeListener } from '../helpers/coms';
+import { isSourceProps } from '../helpers/environment';
 
 const { useState, useEffect } = React;
 
@@ -11,7 +12,6 @@ export default function useConfig() {
 
   function handleSaveConfig(config: any) {
     setConfig(config);
-    console.log('abc');
   }
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function useConfig() {
           setConfig(initialConfig);
         });
 
-      if (xjs.Environment.isSourcePlugin()) {
+      if (!isSourceProps()) {
         addListener('save-config', handleSaveConfig);
 
         return () => {
