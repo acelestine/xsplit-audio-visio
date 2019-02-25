@@ -69,6 +69,9 @@ function render(deviceId: string) {
 
 function handlePropsChange({ detail }: any) {
   const { deviceId } = detail;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
   render(deviceId);
 }
 
