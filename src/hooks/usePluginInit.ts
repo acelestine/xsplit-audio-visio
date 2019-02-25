@@ -9,7 +9,13 @@ export default function usePluginInit(config: any) {
   const { visualizer, audio } = config;
 
   useEffect(() => {
-    console.log('visualizer', visualizer);
+    // Load visualizer
+    const lib = require(`../visualizers/${visualizer}/visualizer`);
+    window.init(config);
+
+    // @TODO:
+    // We might want to simply read the whole file and then execute it similar to an eval
+    // This is to allow custom visualizers to work with using the same logic.
   }, [visualizer]);
   return config;
 }

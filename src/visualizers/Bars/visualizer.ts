@@ -85,6 +85,7 @@ window.init = function(obj: any) {
   ctx = canvas.getContext('2d');
 
   document.addEventListener('props-change', handlePropsChange);
+  render(deviceId);
 
   return () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
