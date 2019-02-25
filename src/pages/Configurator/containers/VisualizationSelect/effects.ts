@@ -1,4 +1,5 @@
 import * as visualizers from '../../../../visualizers';
+import { requestSaveConfig } from '../../../../helpers/coms';
 
 import { VisualizerMetadata } from './interfaces';
 
@@ -11,11 +12,11 @@ export default function VisualizationSelectEffects(dispatch: any) {
         return { label: obj.name, value: obj.id };
       });
 
-      dispatch.visualizations.setList(items);
+      dispatch.visualizations.update('list', items);
     },
-    selectVisualizer(visualizer: string) {
-      // @TODO: We should communicate this back to the HTML plugin
-      dispatch.visualizations.select(visualizer);
+    select(visualizer: string) {
+      requestSaveConfig({ visualizer });
+      dispatch.visualizations.update('selected', visualizer);
     },
   };
 }

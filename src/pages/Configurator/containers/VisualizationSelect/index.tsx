@@ -13,7 +13,7 @@ interface Props {
   selected: string;
   classes: any;
   initializeList: () => void;
-  selectVisualizer: (visualizer: string) => void;
+  select: (visualizer: string) => void;
 }
 
 const styles = {
@@ -32,7 +32,7 @@ function VisualizationSelect({
   list,
   selected,
   initializeList,
-  selectVisualizer,
+  select,
 }: Props) {
   const [isInitialized, setInitialized] = useState(false);
 
@@ -47,7 +47,7 @@ function VisualizationSelect({
     event: React.FormEvent<HTMLSelectElement>,
     value: string
   ) {
-    selectVisualizer(value);
+    select(value);
   }
 
   return (
@@ -69,11 +69,9 @@ const mapState = ({ visualizations: { selected, list } }: any) => ({
   list,
 });
 
-const mapDispatch = ({
-  visualizations: { initializeList, selectVisualizer },
-}: any) => ({
+const mapDispatch = ({ visualizations: { initializeList, select } }: any) => ({
   initializeList,
-  selectVisualizer,
+  select,
 });
 
 export default compose(

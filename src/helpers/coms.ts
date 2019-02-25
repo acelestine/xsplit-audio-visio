@@ -22,6 +22,10 @@ let pluginPropsInstance: any = null;
 let callbackStack: Array<CallbackStackType> = [];
 
 async function initialize() {
+  if (!IS_XSPLIT) {
+    return;
+  }
+
   if (isSourceProps === null) {
     isSourceProps = xjs.Environment.isSourceProps();
   }
@@ -29,25 +33,27 @@ async function initialize() {
   if (pluginInstance === null) {
     const Source = xjs.Source;
     pluginInstance = await Source.getCurrentSource();
-    configObj = await pluginInstance.loadConfig();
   }
+
+  configObj = await pluginInstance.loadConfig();
 
   if (pluginPropsInstance === null && !isSourceProps) {
     const SourcePluginWindow = xjs.SourcePluginWindow;
-    pluginPropsInstance = await SourcePluginWindow.getInstance();
+    pluginPropsInstance = SourcePluginWindow.getInstance();
   }
 }
 
 export async function requestSaveConfig(config: any) {
   await initialize();
 
-  if (!isSourceProps) {
-    throw new Error('mga tanga');
+  if (!isSourceProps && IS_XSPLIT) {
+    throw new Error('mga mangmang');
   }
 
   if (IS_XSPLIT) {
     pluginInstance.requestSaveConfig({ ...configObj, ...config });
   } else if (window.opener) {
+    console.log({ ...config });
     window.opener.postMessage({ type: 'save-config', ...config });
   }
 }
@@ -55,7 +61,7 @@ export async function requestSaveConfig(config: any) {
 export async function applyConfig(config: any) {
   await initialize();
 
-  if (!isSourceProps) {
+  if (!isSourceProps && IS_XSPLIT) {
     throw new Error('mga tanga');
   }
 
@@ -69,7 +75,7 @@ export async function applyConfig(config: any) {
 export async function addListener(type: string, callback: Function) {
   await initialize();
 
-  if (isSourceProps) {
+  if (isSourceProps && IS_XSPLIT) {
     throw new Error('mga bobo');
   }
 
@@ -83,7 +89,7 @@ export async function addListener(type: string, callback: Function) {
 export async function removeListener(type: string, callback: Function) {
   await initialize();
 
-  if (isSourceProps) {
+  if (isSourceProps && IS_XSPLIT) {
     throw new Error('mga inutil');
   }
 
@@ -107,6 +113,7 @@ function handleMessage(event: any) {
   const callbacks = callbackStack.filter(
     (cb: CallbackStackType) => cb.type === type
   );
+  console.log(event);
 
   callbacks.forEach((cb: CallbackStackType) => cb.callback(data));
 }

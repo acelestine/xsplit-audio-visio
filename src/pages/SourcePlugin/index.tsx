@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import useConfig from './hooks/useConfig';
+import useConfig from '../../hooks/useConfig';
 
 const { useState, useEffect } = React;
 
@@ -40,11 +40,7 @@ const SourcePlugin = () => {
 
   console.log(config);
 
-  return (
-    <div style={{ background: 'black', color: 'white' }}>
-      I'm an html plugin!
-    </div>
-  );
+  return <canvas id="canvas" width={1920} height={1080} />;
 };
 
 export default SourcePlugin;

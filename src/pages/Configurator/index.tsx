@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import withStyles from 'react-jss';
 import xjs from 'xjs-framework/dist/xjs-es2015';
 
+import useConfig from '../../hooks/useConfig';
+
 import Section from '../../components/Section';
 import AudioSelect from './containers/AudioSelect';
 import VisualizationSelect from './containers/VisualizationSelect';
@@ -34,6 +36,7 @@ const { useState, useEffect } = React;
 
 const Configuration = ({ classes }: Props) => {
   const [initialized, setInitialize] = useState(false);
+  const { audio } = useConfig();
 
   useEffect(() => {
     if (initialized) {
@@ -55,7 +58,7 @@ const Configuration = ({ classes }: Props) => {
   return (
     <div className={classes.container}>
       <Section label="General" contentClassName={classes.sectionContents}>
-        <AudioSelect />
+        <AudioSelect value={audio} />
         <VisualizationSelect />
       </Section>
       <CustomFields />

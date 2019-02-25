@@ -1,15 +1,8 @@
 import { Visualization } from './interfaces';
 
-export function setList(state: any, list: Visualization[]) {
+export function update(state: any, key: string, value: any) {
   return {
     ...state,
-    list,
-  };
-}
-
-export function select(state: any, selected: string) {
-  return {
-    ...state,
-    selected,
+    [key]: value,
   };
 }

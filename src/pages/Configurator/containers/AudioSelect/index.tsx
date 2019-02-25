@@ -13,6 +13,7 @@ interface AudioOutput {
 
 interface Props {
   classes: any;
+  value: string | undefined;
 }
 
 const styles = {
@@ -26,10 +27,10 @@ const styles = {
 };
 const { useState, useEffect } = React;
 
-function AudioSelect({ classes }: Props) {
+function AudioSelect({ classes, value }: Props) {
   const [isInitialized, setInitialized] = useState(false);
   const [items, setItems] = useState(([] as unknown) as AudioOutput[]);
-  const [selectedItem, setSelectedItem] = useState('default');
+  const [selectedItem, setSelectedItem] = useState(value || 'default');
 
   useEffect(() => {
     if (!isInitialized) {
