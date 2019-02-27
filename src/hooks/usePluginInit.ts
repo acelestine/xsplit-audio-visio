@@ -21,6 +21,6 @@ export default function usePluginInit(config: any) {
       default:
       // @TODO: Handle dynamic visualizers
     }
-  }, [visualizer]);
+  });
   return config;
 }

@@ -8,7 +8,7 @@ const { useState, useEffect } = React;
 
 export default function useConfig(callback?: Function) {
   const [initialized, setInitialized] = useState(false);
-  const [config, setConfig] = useState({} as any);
+  const [config, setConfig] = useState(null as any);
 
   function handleSaveConfig(config: any) {
     setConfig(config);

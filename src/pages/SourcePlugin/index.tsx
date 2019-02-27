@@ -24,13 +24,17 @@ function getMetaContent() {
 
 const SourcePlugin = () => {
   const [initialized, setInitialize] = useState(false);
+  const [item, setItem] = useState(null);
   const config = useConfig((obj: any) => {
-    console.log(obj);
     const event = new CustomEvent('props-change', { detail: obj });
     document.dispatchEvent(event);
+
+    if (item) {
+      (item as any).saveConfig(obj);
+    }
   });
 
-  usePluginInit(config);
+  usePluginInit(config || {});
 
   useEffect(() => {
     if (initialized === false) {
@@ -42,16 +46,17 @@ const SourcePlugin = () => {
       // @TODO: Move the ff. stuff to `effects` or maybe explore the possibility of using custom hooks
       window.GetPlayState = () => {};
 
-      xjs.Source.getCurrentSource().then((item: any) => {
-        item.setBrowserCustomSize(xjs.Rectangle.fromDimensions(1920, 1080));
-        item.setMute(true);
+      xjs.Source.getCurrentSource().then((currentItem: any) => {
+        setItem(currentItem);
+        currentItem.setBrowserCustomSize(
+          xjs.Rectangle.fromDimensions(1920, 1080)
+        );
+        currentItem.setMute(true);
       });
 
       setInitialize(true);
     }
   });
-
-  console.log('SourcePlugin', config);
 
   return <canvas id="canvas" width={1920} height={1080} />;
 };

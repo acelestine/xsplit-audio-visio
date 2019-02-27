@@ -54,9 +54,14 @@ function AudioSelect({ classes, value }: Props) {
 
           setInitialized(true);
           setItems(audioOutputs);
+          setSelectedItem(value || 'default');
         });
     }
   });
+
+  useEffect(() => {
+    setSelectedItem(value || 'default');
+  }, [value]);
 
   function handleChange(
     event: React.FormEvent<HTMLSelectElement>,

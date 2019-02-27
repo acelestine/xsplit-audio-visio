@@ -5,18 +5,8 @@
 let audioCtx = new AudioContext();
 let canvas: any;
 let ctx: any;
-let cache = {
-  audio: '',
-};
 
-function render(audio = 'default') {
-  console.log(audio);
-  if (cache.audio === audio) {
-    return;
-  }
-
-  cache.audio = audio;
-
+function render(audio = 'default', sensitivity = 5) {
   navigator.mediaDevices
     .getUserMedia({
       audio: {
@@ -63,7 +53,12 @@ function render(audio = 'default') {
           const b = 50;
 
           ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
-          ctx.fillRect(x, HEIGHT - barHeight * 5.5, barWidth, barHeight * 5.5);
+          ctx.fillRect(
+            x,
+            HEIGHT - barHeight * sensitivity,
+            barWidth,
+            barHeight * sensitivity
+          );
 
           x += barWidth + 1;
         }
@@ -72,25 +67,32 @@ function render(audio = 'default') {
     });
 }
 
+function computeSensitivity(value: number) {
+  const sensitivity = value / 10;
+
+  if (value < 1) {
+    return 1;
+  }
+
+  return sensitivity;
+}
+
 function handlePropsChange({ detail }: any) {
-  const { audio } = detail;
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  render(audio);
+  const { audio, sensitivity } = detail;
+  render(audio, computeSensitivity(sensitivity));
 }
 
 export default function(obj: any) {
-  const { audio } = obj;
+  const { audio, sensitivity } = obj;
 
-  cache.audio = audio;
   canvas = document.getElementById('canvas');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   ctx = canvas.getContext('2d');
 
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   document.addEventListener('props-change', handlePropsChange);
-  render(audio);
+  render(audio, computeSensitivity(sensitivity));
 
   return () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);

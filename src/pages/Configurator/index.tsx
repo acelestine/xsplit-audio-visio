@@ -36,7 +36,8 @@ const { useState, useEffect } = React;
 
 const Configuration = ({ classes }: Props) => {
   const [initialized, setInitialize] = useState(false);
-  const { audio, ...config } = useConfig();
+  const config = useConfig();
+  const { audio } = (config || {}) as any;
 
   useEffect(() => {
     if (initialized) {
@@ -61,7 +62,7 @@ const Configuration = ({ classes }: Props) => {
         <AudioSelect value={audio} />
         <VisualizationSelect />
       </Section>
-      <CustomFields />
+      {config && <CustomFields config={config} />}
     </div>
   );
 };
