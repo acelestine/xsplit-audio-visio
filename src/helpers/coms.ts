@@ -75,7 +75,7 @@ export async function addListener(type: string, callback: Function) {
   }
 
   if (IS_XSPLIT) {
-    pluginPropsInstance.on(type, callback);
+    pluginPropsInstance.on(type, (...args: any) => callback(...args)); // Why dis happening? dunno...
   } else if (window.opener) {
     callbackStack.push({ type, callback });
   }

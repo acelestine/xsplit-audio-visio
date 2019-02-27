@@ -1,5 +1,3 @@
-export default {}; // typescript stuff
-
 let canvas: any;
 let ctx: any;
 let cache = {
@@ -72,7 +70,7 @@ function handlePropsChange({ detail }: any) {
   render(deviceId);
 }
 
-window.init = function(obj: any) {
+export default function(obj: any) {
   const { deviceId } = obj;
 
   cache.deviceId = deviceId;
@@ -87,4 +85,4 @@ window.init = function(obj: any) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     document.removeEventListener('props-change', handlePropsChange);
   };
-};
+}

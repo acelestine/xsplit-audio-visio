@@ -6,12 +6,16 @@ import { isSourceProps } from '../helpers/environment';
 
 const { useState, useEffect } = React;
 
-export default function useConfig() {
+export default function useConfig(callback?: Function) {
   const [initialized, setInitialized] = useState(false);
   const [config, setConfig] = useState({} as any);
 
   function handleSaveConfig(config: any) {
     setConfig(config);
+
+    if (callback) {
+      callback(config);
+    }
   }
 
   useEffect(() => {

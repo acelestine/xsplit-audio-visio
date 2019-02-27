@@ -1,4 +1,5 @@
 import * as React from 'react';
+import xjs from 'xjs-framework/dist/xjs-es2015';
 
 import useConfig from '../../hooks/useConfig';
 import usePluginInit from '../../hooks/usePluginInit';
@@ -23,7 +24,12 @@ function getMetaContent() {
 
 const SourcePlugin = () => {
   const [initialized, setInitialize] = useState(false);
-  const config = useConfig();
+  const config = useConfig((obj: any) => {
+    console.log(obj);
+    const event = new CustomEvent('props-change', { detail: obj });
+    document.dispatchEvent(event);
+  });
+
   usePluginInit(config);
 
   useEffect(() => {
@@ -35,6 +41,11 @@ const SourcePlugin = () => {
 
       // @TODO: Move the ff. stuff to `effects` or maybe explore the possibility of using custom hooks
       window.GetPlayState = () => {};
+
+      xjs.Source.getCurrentSource().then((item: any) => {
+        item.setBrowserCustomSize(xjs.Rectangle.fromDimensions(1920, 1080));
+        item.setMute(true);
+      });
 
       setInitialize(true);
     }

@@ -77,6 +77,9 @@ class CustomFields extends React.Component<Props> {
             switch (field.type) {
               case 'slider':
                 return this.renderSlider(omit(field, ['type']));
+
+              case 'select':
+                return this.renderSelect(omit(field, ['type']));
             }
           })}
         </Section>

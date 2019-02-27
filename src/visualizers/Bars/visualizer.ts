@@ -1,26 +1,31 @@
-export default {}; // typescript stuff
-
+/**
+ * Visualizer logic initially copied from:
+ * https://codepen.io/nfj525/pen/rVBaab
+ */
+let audioCtx = new AudioContext();
 let canvas: any;
 let ctx: any;
 let cache = {
-  deviceId: '',
+  audio: '',
 };
 
-function render(deviceId: string) {
-  if (cache.deviceId === deviceId) {
+function render(audio = 'default') {
+  console.log(audio);
+  if (cache.audio === audio) {
     return;
   }
 
-  cache.deviceId = deviceId;
+  cache.audio = audio;
 
   navigator.mediaDevices
     .getUserMedia({
       audio: {
-        deviceId,
+        deviceId: audio,
       },
     })
     .then(stream => {
-      const audioCtx = new AudioContext();
+      audioCtx.close();
+      audioCtx = new AudioContext();
       const src = audioCtx.createMediaStreamSource(stream);
       const analyser = audioCtx.createAnalyser();
 
@@ -58,7 +63,7 @@ function render(deviceId: string) {
           const b = 50;
 
           ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
-          ctx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
+          ctx.fillRect(x, HEIGHT - barHeight * 5.5, barWidth, barHeight * 5.5);
 
           x += barWidth + 1;
         }
@@ -68,27 +73,27 @@ function render(deviceId: string) {
 }
 
 function handlePropsChange({ detail }: any) {
-  const { deviceId } = detail;
+  const { audio } = detail;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  render(deviceId);
+  render(audio);
 }
 
-window.init = function(obj: any) {
-  const { deviceId } = obj;
+export default function(obj: any) {
+  const { audio } = obj;
 
-  cache.deviceId = deviceId;
+  cache.audio = audio;
   canvas = document.getElementById('canvas');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   ctx = canvas.getContext('2d');
 
   document.addEventListener('props-change', handlePropsChange);
-  render(deviceId);
+  render(audio);
 
   return () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     document.removeEventListener('props-change', handlePropsChange);
   };
-};
+}

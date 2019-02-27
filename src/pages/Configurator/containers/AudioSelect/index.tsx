@@ -41,7 +41,7 @@ function AudioSelect({ classes, value }: Props) {
           const audioOutputs = devices
             .filter(
               (device: MediaDeviceInfo) =>
-                device.kind === 'audiooutput' &&
+                device.kind === 'audioinput' &&
                 (device.label !== '' || device.deviceId === 'default')
             )
             .map((device: MediaDeviceInfo) => ({

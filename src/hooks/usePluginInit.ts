@@ -1,21 +1,26 @@
 import * as React from 'react';
-import xjs from 'xjs-framework/dist/xjs-es2015';
+import { default as InitBars } from '../visualizers/Bars/visualizer';
+import { default as InitWave } from '../visualizers/Wave/visualizer';
 
 import { addListener, removeListener } from '../helpers/coms';
 
 const { useState, useEffect } = React;
 
 export default function usePluginInit(config: any) {
-  const { visualizer, audio } = config;
-
+  const { visualizer = 'bars' } = config;
   useEffect(() => {
-    // Load visualizer
-    const lib = require(`../visualizers/${visualizer}/visualizer`);
-    window.init(config);
+    switch (visualizer) {
+      case 'bars':
+        InitBars(config);
+        break;
 
-    // @TODO:
-    // We might want to simply read the whole file and then execute it similar to an eval
-    // This is to allow custom visualizers to work with using the same logic.
+      case 'wave':
+        InitWave(config);
+        break;
+
+      default:
+      // @TODO: Handle dynamic visualizers
+    }
   }, [visualizer]);
   return config;
 }
