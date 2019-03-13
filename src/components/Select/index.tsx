@@ -81,6 +81,29 @@ function Select({ classes, children, value, onSelect }: Props) {
   const [selected, setSelected] = useState('');
   const [isExpanded, setExpanded] = useState(false);
 
+  // @HACK: Effin hack because `onBlur` property gets called even if you did not really blur it.
+  function hackClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLDivElement;
+    const closestTarget = target.closest(`.${classes.container}`);
+    const ident = target.dataset.ident;
+
+    if (
+      ident !== 'select' &&
+      (!closestTarget ||
+        (closestTarget as HTMLElement).dataset.ident !== 'select')
+    ) {
+      setExpanded(false);
+    }
+  }
+
+  useEffect(() => {
+    document.body.addEventListener('click', hackClickOutside);
+
+    return () => {
+      document.body.removeEventListener('click', hackClickOutside);
+    };
+  }, []);
+
   useEffect(() => {
     const items = React.Children.map(children, (child: any) => ({
       value: child.props.value,
@@ -115,18 +138,12 @@ function Select({ classes, children, value, onSelect }: Props) {
     }
   }
 
-  function handleBlur(event: React.FocusEvent) {
-    setExpanded(false);
-  }
-
-  // @HACK: Using datasets because we cannot use refs
   return (
     <div
       className={classes.container}
       onClick={handleClick}
-      onBlur={handleBlur}
       data-ident="select"
-      tabIndex={-1}
+      tabIndex={0}
     >
       <label>{selected}</label>
 

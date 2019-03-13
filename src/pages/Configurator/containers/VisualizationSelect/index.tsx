@@ -34,14 +34,9 @@ function VisualizationSelect({
   initializeList,
   select,
 }: Props) {
-  const [isInitialized, setInitialized] = useState(false);
-
   useEffect(() => {
-    if (!isInitialized) {
-      initializeList();
-      setInitialized(true);
-    }
-  });
+    initializeList();
+  }, []);
 
   function handleChange(
     event: React.FormEvent<HTMLSelectElement>,

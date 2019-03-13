@@ -23,7 +23,6 @@ function getMetaContent() {
 }
 
 const SourcePlugin = () => {
-  const [initialized, setInitialize] = useState(false);
   const [item, setItem] = useState(null);
   const config = useConfig((obj: any) => {
     const event = new CustomEvent('props-change', { detail: obj });
@@ -37,26 +36,22 @@ const SourcePlugin = () => {
   usePluginInit(config || {});
 
   useEffect(() => {
-    if (initialized === false) {
-      const meta = document.createElement('meta');
-      meta.setAttribute('name', 'xsplit:config-url');
-      meta.setAttribute('content', getMetaContent());
-      document.head.appendChild(meta);
+    const meta = document.createElement('meta');
+    meta.setAttribute('name', 'xsplit:config-url');
+    meta.setAttribute('content', getMetaContent());
+    document.head.appendChild(meta);
 
-      // @TODO: Move the ff. stuff to `effects` or maybe explore the possibility of using custom hooks
-      window.GetPlayState = () => {};
+    // @TODO: Move the ff. stuff to `effects` or maybe explore the possibility of using custom hooks
+    window.GetPlayState = () => {};
 
-      xjs.Source.getCurrentSource().then((currentItem: any) => {
-        setItem(currentItem);
-        currentItem.setBrowserCustomSize(
-          xjs.Rectangle.fromDimensions(1920, 1080)
-        );
-        currentItem.setMute(true);
-      });
-
-      setInitialize(true);
-    }
-  });
+    xjs.Source.getCurrentSource().then((currentItem: any) => {
+      setItem(currentItem);
+      currentItem.setBrowserCustomSize(
+        xjs.Rectangle.fromDimensions(1920, 1080)
+      );
+      currentItem.setMute(true);
+    });
+  }, []);
 
   return <canvas id="canvas" width={1920} height={1080} />;
 };

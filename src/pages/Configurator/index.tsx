@@ -32,18 +32,13 @@ const styles = (theme: any) => ({
   },
 });
 
-const { useState, useEffect } = React;
+const { useEffect } = React;
 
 const Configuration = ({ classes }: Props) => {
-  const [initialized, setInitialize] = useState(false);
   const config = useConfig();
   const { audio } = (config || {}) as any;
 
   useEffect(() => {
-    if (initialized) {
-      return;
-    }
-
     if (window.external.isXsplitShell) {
       const propsWindow = xjs.SourcePropsWindow.getInstance();
 
@@ -52,9 +47,7 @@ const Configuration = ({ classes }: Props) => {
         tabOrder: ['Custom', 'Layout', 'Color', 'Transition'],
       });
     }
-
-    setInitialize(true);
-  });
+  }, []);
 
   return (
     <div className={classes.container}>
