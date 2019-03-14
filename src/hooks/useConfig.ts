@@ -29,8 +29,39 @@ export default function useConfig(callback?: Function) {
     }
   }
 
+  function createHandleStorageEvent(currentSource: any) {
+    return ({ oldValue, newValue, key }: StorageEvent) => {
+      if (key !== 'plugin-config') {
+        return; // Do nothing
+      }
+
+      try {
+        // This shouldn't happen, storage should not get triggered if old and new are the same... but just in case...
+        if (newValue === oldValue) {
+          return;
+        }
+
+        const data = JSON.parse(newValue as string);
+
+        if (data.id !== `audio-visualizer-${identifier}`) {
+          return;
+        }
+
+        currentSource
+          .then((source: any) => source.loadConfig())
+          .then((initialConfig: any) => {
+            setConfig(initialConfig);
+          });
+      } catch (error) {
+        // DO nothing
+      }
+    };
+  }
+
   useEffect(() => {
-    xjs.Source.getCurrentSource()
+    const currentSource = xjs.Source.getCurrentSource();
+
+    currentSource
       .then((source: any) => source.loadConfig())
       .then((initialConfig: any) => {
         setInitialized(true);
@@ -45,7 +76,13 @@ export default function useConfig(callback?: Function) {
       };
     }
 
-    window.addEventListener('storage', () => {});
+    const handleStorageEvent = createHandleStorageEvent(currentSource);
+
+    window.addEventListener('storage', handleStorageEvent);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageEvent);
+    };
   }, [initialized]);
 
   return config;

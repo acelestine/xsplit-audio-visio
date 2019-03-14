@@ -36,7 +36,7 @@ const { useEffect } = React;
 
 const Configuration = ({ classes }: Props) => {
   const config = useConfig();
-  const { audio } = (config || {}) as any;
+  const { audio, visualization } = (config || {}) as any;
 
   useEffect(() => {
     if (window.external.isXsplitShell) {
@@ -53,7 +53,7 @@ const Configuration = ({ classes }: Props) => {
     <div className={classes.container}>
       <Section label="General" contentClassName={classes.sectionContents}>
         <AudioSelect value={audio} />
-        <VisualizationSelect />
+        <VisualizationSelect value={visualization} />
       </Section>
       {config && <CustomFields config={config} />}
     </div>

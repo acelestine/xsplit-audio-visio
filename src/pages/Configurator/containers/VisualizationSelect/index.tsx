@@ -12,8 +12,10 @@ interface Props {
   list: Visualization[];
   selected: string;
   classes: any;
+  value: string;
   initializeList: () => void;
   select: (visualizer: string) => void;
+  update: (key: string, value: any) => void;
 }
 
 const styles = {
@@ -25,7 +27,7 @@ const styles = {
     paddingRight: '2.8em',
   },
 };
-const { useState, useEffect } = React;
+const { useEffect } = React;
 
 function VisualizationSelect({
   classes,
@@ -33,9 +35,12 @@ function VisualizationSelect({
   selected,
   initializeList,
   select,
+  update,
+  value,
 }: Props) {
   useEffect(() => {
     initializeList();
+    value && update('selected', value);
   }, []);
 
   function handleChange(
@@ -64,12 +69,15 @@ const mapState = ({ visualizations: { selected, list } }: any) => ({
   list,
 });
 
-const mapDispatch = ({ visualizations: { initializeList, select } }: any) => ({
+const mapDispatch = ({
+  visualizations: { initializeList, select, update },
+}: any) => ({
   initializeList,
   select,
+  update,
 });
 
-export default compose(
+export default compose<any>(
   connect(
     mapState,
     mapDispatch
