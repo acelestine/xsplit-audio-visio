@@ -18,5 +18,10 @@ export default function VisualizationSelectEffects(dispatch: any) {
       requestSaveConfig({ visualizer });
       dispatch.visualizations.update('selected', visualizer);
     },
+    addVisualization(url: string) {
+      fetch(url)
+        .then((res: Response) => res.json())
+        .then((res: any) => console.log(res));
+    },
   };
 }

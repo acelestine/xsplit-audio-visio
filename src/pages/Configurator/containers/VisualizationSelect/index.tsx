@@ -5,6 +5,7 @@ import withStyles from 'react-jss';
 
 import Select from '../../../../components/Select';
 import Option from '../../../../components/Select/Option';
+import OptionText from '../../../../components/Select/OptionText';
 
 import { Visualization } from './interfaces';
 
@@ -14,6 +15,7 @@ interface Props {
   classes: any;
   value: string;
   initializeList: () => void;
+  addVisualization: (url: string) => void;
   select: (visualizer: string) => void;
   update: (key: string, value: any) => void;
 }
@@ -34,6 +36,7 @@ function VisualizationSelect({
   list,
   selected,
   initializeList,
+  addVisualization,
   select,
   update,
   value,
@@ -50,6 +53,15 @@ function VisualizationSelect({
     select(value);
   }
 
+  function handleAdd(url: string) {
+    // @TODO:
+    // dispatch action that would get manifest file
+    // and then IF manifest file exists and is valid
+    // add it to the list :D
+    // and then call select action
+    addVisualization(url);
+  }
+
   return (
     <div className={classes.container}>
       <label className={classes.label}>Visualizer</label>
@@ -59,6 +71,7 @@ function VisualizationSelect({
             {item.label}
           </Option>
         ))}
+        <OptionText onUpdate={handleAdd}>Add Custom...</OptionText>
       </Select>
     </div>
   );
@@ -70,9 +83,10 @@ const mapState = ({ visualizations: { selected, list } }: any) => ({
 });
 
 const mapDispatch = ({
-  visualizations: { initializeList, select, update },
+  visualizations: { initializeList, addVisualization, select, update },
 }: any) => ({
   initializeList,
+  addVisualization,
   select,
   update,
 });

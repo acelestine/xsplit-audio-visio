@@ -125,11 +125,11 @@ function Select({ classes, children, value, onSelect }: Props) {
     const target = event.target as HTMLDivElement;
     const closestTarget = target.closest(`.${classes.container}`);
     const ident = target.dataset.ident;
-
-    if (
+    const isClosestSelect =
       ident === 'select' ||
-      (closestTarget as HTMLElement).dataset.ident === 'select'
-    ) {
+      (closestTarget as HTMLElement).dataset.ident === 'select';
+
+    if (isClosestSelect && ident !== 'option-text') {
       setExpanded(!isExpanded);
     }
 
