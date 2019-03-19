@@ -21,7 +21,8 @@ export default function VisualizationSelectEffects(dispatch: any) {
     addVisualization(url: string) {
       fetch(url)
         .then((res: Response) => res.json())
-        .then((res: any) => console.log(res));
+        .then((res: any) => console.log(res))
+        .catch((error: any) => console.error(error));
     },
   };
 }
