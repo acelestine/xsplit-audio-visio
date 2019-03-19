@@ -6,6 +6,7 @@ export default {
   state: {
     list: [],
     selected: 'bars',
+    isLoading: false,
   },
   reducers,
   effects,

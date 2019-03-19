@@ -18,11 +18,19 @@ export default function VisualizationSelectEffects(dispatch: any) {
       requestSaveConfig({ visualizer });
       dispatch.visualizations.update('selected', visualizer);
     },
-    addVisualization(url: string) {
-      fetch(url)
-        .then((res: Response) => res.json())
-        .then((res: any) => console.log(res))
-        .catch((error: any) => console.error(error));
+    async addVisualization(url: string) {
+      dispatch.visualizations.update('isLoading', true);
+
+      try {
+        const raw = await fetch(url);
+        const response = await raw.json();
+
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+
+      dispatch.visualizations.update('isLoading', false);
     },
   };
 }

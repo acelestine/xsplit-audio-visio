@@ -1,6 +1,5 @@
 import * as React from 'react';
 import withStyles from 'react-jss';
-import Loader from 'react-loader-spinner';
 
 export interface Props {
   children: string;
@@ -26,15 +25,11 @@ const styles = (theme: any) => ({
   text: {
     width: 'calc(100% - 2px)',
   },
-  loaderContainer: {
-    textAlign: 'center',
-  },
 });
 
 function OptionText({ classes, children, onUpdate }: Props) {
   const inputEl = useRef(null);
   const [showInput, setShowInput] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (showInput && inputEl.current) {
@@ -48,21 +43,9 @@ function OptionText({ classes, children, onUpdate }: Props) {
 
   function handleKeyPress(event: React.KeyboardEvent) {
     if (event.which === 13 && onUpdate) {
-      setIsLoading(true);
       onUpdate((event.target as HTMLInputElement).value);
     }
   }
-
-  const child = showInput ? (
-    <input
-      className={classes.text}
-      ref={inputEl}
-      data-ident="option-text"
-      onKeyPress={handleKeyPress}
-    />
-  ) : (
-    children
-  );
 
   return (
     <div
@@ -70,14 +53,15 @@ function OptionText({ classes, children, onUpdate }: Props) {
       data-ident="option-text"
       onClick={handleClick}
     >
-      {}
-
-      {isLoading ? (
-        <div className={classes.loaderContainer}>
-          <Loader type="Puff" color="#00BFFF" height="20" width="20" />
-        </div>
+      {showInput ? (
+        <input
+          className={classes.text}
+          ref={inputEl}
+          data-ident="option-text"
+          onKeyPress={handleKeyPress}
+        />
       ) : (
-        child
+        children
       )}
     </div>
   );
