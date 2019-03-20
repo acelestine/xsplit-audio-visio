@@ -41,6 +41,9 @@ class CustomFields extends React.Component<Props> {
 
   handleChange = (id: string) => (value: any) => {
     this.setState({ [id]: value });
+  };
+
+  handleUpdate = (id: string) => (value: any) => {
     requestSaveConfig({ [id]: value });
   };
 
@@ -76,6 +79,7 @@ class CustomFields extends React.Component<Props> {
           value={this.state[id] || defaultValue}
           maxValue={maxValue}
           onChange={this.handleChange(id)}
+          onUpdate={this.handleUpdate(id)}
           knob
         />
       </div>
@@ -83,7 +87,7 @@ class CustomFields extends React.Component<Props> {
   }
 
   render() {
-    const { visualization } = this.props;
+    const { visualization, config } = this.props;
 
     if (
       visualization &&

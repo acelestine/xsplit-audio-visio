@@ -14,6 +14,7 @@ interface Props {
   knob?: boolean;
   disabled?: boolean;
   onChange?: any;
+  onUpdate?: any;
 }
 
 interface State {
@@ -198,7 +199,13 @@ class Slider extends React.Component<Props, State> {
     }
   };
 
-  handleMouseUp = (event: any) => (this.mouseDown = false);
+  handleMouseUp = (event: any) => {
+    this.mouseDown = false;
+
+    if (this.props.onUpdate) {
+      this.props.onUpdate(this.state.value);
+    }
+  };
 
   handleMouseDown = (event: React.MouseEvent) => {
     event.persist();

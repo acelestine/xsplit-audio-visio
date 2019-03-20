@@ -15,7 +15,6 @@ import CustomFields from './containers/CustomFields';
 
 interface Props {
   classes: any;
-  visualization: string;
   isLoading: boolean;
 }
 
@@ -84,8 +83,7 @@ const Configuration = ({ classes, isLoading }: Props) => {
   );
 };
 
-const mapState = ({ visualizations: { selected, isLoading } }: any) => ({
-  visualization: selected,
+const mapState = ({ visualizations: { isLoading } }: any) => ({
   isLoading,
 });
 
