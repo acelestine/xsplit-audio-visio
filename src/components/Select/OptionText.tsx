@@ -4,7 +4,7 @@ import withStyles from 'react-jss';
 export interface Props {
   children: string;
   classes: any;
-  onUpdate: (url: string) => void;
+  onUpdate: (url: string) => any;
 }
 
 const { useState, useEffect, useRef } = React;
@@ -41,9 +41,13 @@ function OptionText({ classes, children, onUpdate }: Props) {
     setShowInput(!showInput);
   }
 
-  function handleKeyPress(event: React.KeyboardEvent) {
+  async function handleKeyPress(event: React.KeyboardEvent) {
     if (event.which === 13 && onUpdate) {
-      onUpdate((event.target as HTMLInputElement).value);
+      const isSuccess = await onUpdate(
+        (event.target as HTMLInputElement).value
+      );
+
+      setShowInput(!isSuccess);
     }
   }
 

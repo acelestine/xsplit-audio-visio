@@ -2,7 +2,6 @@ import * as React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import withStyles from 'react-jss';
-import Loader from 'react-loader-spinner';
 
 import Select from '../../../../components/Select';
 import Option from '../../../../components/Select/Option';
@@ -15,9 +14,8 @@ interface Props {
   selected: string;
   classes: any;
   value: string;
-  isLoading: boolean;
   initializeList: () => void;
-  addVisualization: (url: string) => void;
+  addVisualization: (url: string) => any;
   select: (visualizer: string) => void;
   update: (key: string, value: any) => void;
 }
@@ -31,18 +29,6 @@ const styles = {
   label: {
     paddingRight: '2.8em',
   },
-  loading: {
-    background: 'rgba(0,0,0,0.5)',
-    position: 'absolute',
-    zIndex: 9,
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
 };
 const { useEffect } = React;
 
@@ -55,7 +41,6 @@ function VisualizationSelect({
   select,
   update,
   value,
-  isLoading = false,
 }: Props) {
   useEffect(() => {
     initializeList();
@@ -75,20 +60,13 @@ function VisualizationSelect({
     // and then IF manifest file exists and is valid
     // add it to the list :D
     // and then call select action
-    addVisualization(url);
+    return addVisualization(url);
   }
 
   return (
     <div className={classes.container}>
       <label className={classes.label}>Visualizer</label>
       <Select value={selected} onSelect={handleChange}>
-        {isLoading ? (
-          <div className={classes.loading}>
-            <Loader type="Puff" color="#00BFFF" height={40} width={40} />
-          </div>
-        ) : (
-          <div />
-        )}
         {list.map(item => (
           <Option key={item.value} value={item.value}>
             {item.label}
@@ -100,10 +78,9 @@ function VisualizationSelect({
   );
 }
 
-const mapState = ({ visualizations: { selected, list, isLoading } }: any) => ({
+const mapState = ({ visualizations: { selected, list } }: any) => ({
   selected,
   list,
-  isLoading,
 });
 
 const mapDispatch = ({

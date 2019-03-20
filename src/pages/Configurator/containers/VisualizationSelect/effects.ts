@@ -19,11 +19,14 @@ export default function VisualizationSelectEffects(dispatch: any) {
       dispatch.visualizations.update('selected', visualizer);
     },
     async addVisualization(url: string) {
+      let isSuccess = false;
       dispatch.visualizations.update('isLoading', true);
 
       try {
         const raw = await fetch(url);
         const response = await raw.json();
+
+        isSuccess = true;
 
         console.log(response);
       } catch (error) {
@@ -31,6 +34,8 @@ export default function VisualizationSelectEffects(dispatch: any) {
       }
 
       dispatch.visualizations.update('isLoading', false);
+
+      return isSuccess;
     },
   };
 }

@@ -3,6 +3,8 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import withStyles from 'react-jss';
 import xjs from 'xjs-framework/dist/xjs-es2015';
+import Loader from 'react-loader-spinner';
+import cx from 'classnames';
 
 import useConfig from '../../hooks/useConfig';
 
@@ -14,6 +16,7 @@ import CustomFields from './containers/CustomFields';
 interface Props {
   classes: any;
   visualization: string;
+  isLoading: boolean;
 }
 
 const styles = (theme: any) => ({
@@ -30,11 +33,28 @@ const styles = (theme: any) => ({
       marginBottom: '1em',
     },
   },
+  loading: {
+    alignItems: 'center',
+    background: 'rgba(0,0,0,0.5)',
+    bottom: 0,
+    display: 'none',
+    justifyContent: 'center',
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 999,
+
+    '&$show': {
+      display: 'flex',
+    },
+  },
+  show: {},
 });
 
 const { useEffect } = React;
 
-const Configuration = ({ classes }: Props) => {
+const Configuration = ({ classes, isLoading }: Props) => {
   const config = useConfig();
   const { audio, visualization } = (config || {}) as any;
 
@@ -51,6 +71,10 @@ const Configuration = ({ classes }: Props) => {
 
   return (
     <div className={classes.container}>
+      <div className={cx(classes.loading, { [classes.show]: isLoading })}>
+        <Loader type="Puff" color="#00BFFF" height={40} width={40} />
+      </div>
+
       <Section label="General" contentClassName={classes.sectionContents}>
         <AudioSelect value={audio} />
         <VisualizationSelect value={visualization} />
@@ -60,8 +84,9 @@ const Configuration = ({ classes }: Props) => {
   );
 };
 
-const mapState = ({ visualizations: { selected } }: any) => ({
+const mapState = ({ visualizations: { selected, isLoading } }: any) => ({
   visualization: selected,
+  isLoading,
 });
 
 export default compose(
