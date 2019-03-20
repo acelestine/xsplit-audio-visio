@@ -72,7 +72,7 @@ function VisualizationSelect({
             {item.label}
           </Option>
         ))}
-        <OptionText onUpdate={handleAdd}>Add Custom...</OptionText>
+        {/* <OptionText onUpdate={handleAdd}>Add Custom...</OptionText> */}
       </Select>
     </div>
   );
