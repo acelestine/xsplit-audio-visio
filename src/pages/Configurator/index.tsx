@@ -62,8 +62,8 @@ const Configuration = ({ classes, isLoading }: Props) => {
       const propsWindow = xjs.SourcePropsWindow.getInstance();
 
       propsWindow.useTabbedWindow({
-        customTabs: ['Custom'],
-        tabOrder: ['Custom', 'Layout', 'Color', 'Transition'],
+        customTabs: ['Visualization'],
+        tabOrder: ['Visualization', 'Layout', 'Color', 'Transition'],
       });
     }
   }, []);
