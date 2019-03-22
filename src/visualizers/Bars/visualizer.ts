@@ -79,6 +79,11 @@ function computeSensitivity(value: number) {
 
 function handlePropsChange({ detail }: any) {
   const { audio, sensitivity } = detail;
+
+  if (canvas) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   render(audio, computeSensitivity(sensitivity));
 }
 

@@ -66,6 +66,10 @@ export default function useConfig(callback?: Function) {
       .then((initialConfig: any) => {
         setInitialized(true);
         setConfig(initialConfig);
+
+        if (callback) {
+          callback(initialConfig);
+        }
       });
 
     if (!isSourceProps()) {

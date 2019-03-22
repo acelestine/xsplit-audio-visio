@@ -41,7 +41,6 @@ const SourcePlugin = () => {
     meta.setAttribute('content', getMetaContent());
     document.head.appendChild(meta);
 
-    // @TODO: Move the ff. stuff to `effects` or maybe explore the possibility of using custom hooks
     window.GetPlayState = () => {};
 
     xjs.Source.getCurrentSource().then((currentItem: any) => {
