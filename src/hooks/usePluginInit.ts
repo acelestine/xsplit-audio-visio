@@ -11,7 +11,6 @@ export default function usePluginInit(config: any) {
   useEffect(() => {
     switch (visualizer) {
       case 'bars':
-        console.log(config);
         InitBars(config);
         break;
 

@@ -66,7 +66,7 @@ export default function useConfig(callback?: Function) {
       .then((initialConfig: any) => {
         const computedConfig = initialConfig.visualizer
           ? initialConfig
-          : { ...initialConfig, visualizer: 'bars' };
+          : { ...initialConfig, visualizer: 'bars', audio: 'default' };
 
         setInitialized(true);
         setConfig(computedConfig);
