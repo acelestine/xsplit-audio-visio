@@ -64,11 +64,15 @@ export default function useConfig(callback?: Function) {
     currentSource
       .then((source: any) => source.loadConfig())
       .then((initialConfig: any) => {
+        const computedConfig = initialConfig.visualizer
+          ? initialConfig
+          : { ...initialConfig, visualizer: 'bars' };
+
         setInitialized(true);
-        setConfig(initialConfig);
+        setConfig(computedConfig);
 
         if (callback) {
-          callback(initialConfig);
+          callback(computedConfig);
         }
       });
 

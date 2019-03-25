@@ -24,6 +24,11 @@ const styles = {
   label: {
     paddingRight: '1em',
   },
+  sectionContents: {
+    '& > div > div:not(:last-of-type)': {
+      marginBottom: '1em',
+    },
+  },
 };
 
 class CustomFields extends React.Component<Props> {
@@ -87,7 +92,7 @@ class CustomFields extends React.Component<Props> {
   }
 
   render() {
-    const { visualization, config } = this.props;
+    const { visualization, classes } = this.props;
 
     if (
       visualization &&
@@ -98,7 +103,10 @@ class CustomFields extends React.Component<Props> {
 
       // @TODO: Figure out how to pre-populate the fields with value if ever user already had some saved in the config
       return (
-        <Section label="Visualization Settings">
+        <Section
+          label="Visualization Settings"
+          contentClassName={classes.sectionContents}
+        >
           {fields.map((field: any) => {
             switch (field.type) {
               case 'slider':
