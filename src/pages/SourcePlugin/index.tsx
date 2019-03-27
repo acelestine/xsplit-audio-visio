@@ -6,22 +6,6 @@ import usePluginInit from '../../hooks/usePluginInit';
 
 const { useState, useEffect } = React;
 
-function getMetaContent() {
-  if (location.origin !== 'file://') {
-    return location.origin;
-  }
-
-  const captured = /.+\/([\w\W]+)\.(\w+)/gm.exec(location.href);
-
-  if (captured) {
-    const [fullPath, filename, extension] = captured;
-
-    return `./${filename}.${extension}`;
-  }
-
-  return '';
-}
-
 const SourcePlugin = () => {
   const [item, setItem] = useState(null);
   const config = useConfig((obj: any) => {
@@ -36,11 +20,6 @@ const SourcePlugin = () => {
   usePluginInit(config || {});
 
   useEffect(() => {
-    const meta = document.createElement('meta');
-    meta.setAttribute('name', 'xsplit:config-url');
-    meta.setAttribute('content', getMetaContent());
-    document.head.appendChild(meta);
-
     window.GetPlayState = () => {};
 
     xjs.Source.getCurrentSource().then((currentItem: any) => {
