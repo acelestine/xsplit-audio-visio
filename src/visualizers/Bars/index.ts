@@ -12,5 +12,12 @@ export default {
       tooltip:
         'Increasing this value will make<br> the visualizer respond to quieter sounds <br>and make the graph bigger.',
     },
+    {
+      id: 'color',
+      label: 'Color',
+      type: 'colorpicker',
+      default: '#F00',
+      tooltip: 'Select the color of the visualizer',
+    },
   ],
 };
