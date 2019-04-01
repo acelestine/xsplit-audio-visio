@@ -55,8 +55,13 @@ function AudioSelect({ classes, value }: Props) {
             return left.label > right.label ? 1 : -1;
           });
 
+        // Get device Id of XSplitBroadcaster... which is now "Default"
+        const defaultDevice = audioOutputs.find(
+          (device: any) => device.label === 'Default'
+        ) || { value: 'default' };
+
         setItems(audioOutputs);
-        setSelectedItem(value || 'default');
+        setSelectedItem(value || defaultDevice.value);
       });
   }, []);
 
