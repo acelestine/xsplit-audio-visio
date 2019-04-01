@@ -40,15 +40,20 @@ function AudioSelect({ classes, value }: Props) {
           .filter(
             (device: MediaDeviceInfo) =>
               device.kind === 'audioinput' &&
-              (device.label !== '' || device.deviceId === 'default')
+              (device.label !== '' || device.deviceId !== 'default')
           )
           .map((device: MediaDeviceInfo) => ({
             value: device.deviceId,
             label:
-              device.deviceId === 'default'
+              device.label === 'XSplitBroadcaster (DirectShow)'
                 ? 'Default'
                 : device.label.replace(' (DirectShow)', ''),
-          }));
+          }))
+          .sort((left, right) => {
+            if (left.label === 'Default') return -1;
+
+            return left.label > right.label ? 1 : -1;
+          });
 
         setItems(audioOutputs);
         setSelectedItem(value || 'default');
