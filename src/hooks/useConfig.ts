@@ -5,8 +5,9 @@ import { addListener, removeListener } from '../helpers/coms';
 import { isSourceProps } from '../helpers/environment';
 import { getIdentifier } from '../helpers/identifier';
 
+const { isXsplitShell: IS_XSPLIT } = window.external;
+
 const { useState, useEffect } = React;
-const identifier = getIdentifier(location.href);
 
 export default function useConfig(callback?: Function) {
   const [initialized, setInitialized] = useState(false); // @HACK
@@ -16,22 +17,27 @@ export default function useConfig(callback?: Function) {
   function handleSaveConfig(config: any) {
     setConfig(config);
 
-    localStorage.setItem(
-      'plugin-config',
-      JSON.stringify({
-        id: `audio-visualizer-${identifier}`,
+    getIdentifier().then(identifier => {
+      const obj: any = {
+        id: identifier,
         value: Date.now(),
-      })
-    );
+      };
 
-    if (callback) {
-      callback(config);
-    }
+      if (!IS_XSPLIT) {
+        obj['config'] = config;
+      }
+
+      localStorage.setItem('xsplit-plugin-event', JSON.stringify(obj));
+
+      if (callback) {
+        callback(config);
+      }
+    });
   }
 
   function createHandleStorageEvent(currentSource: any) {
     return ({ oldValue, newValue, key }: StorageEvent) => {
-      if (key !== 'plugin-config') {
+      if (key !== 'xsplit-plugin-event') {
         return; // Do nothing
       }
 
@@ -43,15 +49,21 @@ export default function useConfig(callback?: Function) {
 
         const data = JSON.parse(newValue as string);
 
-        if (data.id !== `audio-visualizer-${identifier}`) {
-          return;
-        }
+        getIdentifier().then(identifier => {
+          if (data.id !== identifier) {
+            return;
+          }
 
-        currentSource
-          .then((source: any) => source.loadConfig())
-          .then((initialConfig: any) => {
-            setConfig(initialConfig);
-          });
+          if (IS_XSPLIT) {
+            currentSource
+              .then((source: any) => source.loadConfig())
+              .then((initialConfig: any) => {
+                setConfig(initialConfig);
+              });
+          } else {
+            setConfig(data.config);
+          }
+        });
       } catch (error) {
         // DO nothing
       }

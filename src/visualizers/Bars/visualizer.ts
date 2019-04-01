@@ -90,8 +90,6 @@ function handlePropsChange({ detail }: any) {
 export default function(obj: any) {
   const { audio, sensitivity = 50 } = obj;
 
-  console.log(audio);
-
   canvas = document.getElementById('canvas');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;

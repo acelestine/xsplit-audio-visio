@@ -48,8 +48,8 @@ export async function requestSaveConfig(config: any) {
 
   if (IS_XSPLIT) {
     pluginInstance.requestSaveConfig({ ...configObj, ...config });
-  } else if (window.opener) {
-    window.opener.postMessage({ type: 'save-config', ...config });
+  } else if (parent.window.opener) {
+    parent.window.opener.postMessage({ type: 'save-config', ...config });
   }
 }
 
@@ -62,8 +62,8 @@ export async function applyConfig(config: any) {
 
   if (IS_XSPLIT) {
     pluginInstance.applyConfig({ ...configObj, ...config });
-  } else if (window.opener) {
-    window.opener.postMessage({ type: 'apply-config', ...config });
+  } else if (parent.window.opener) {
+    parent.window.opener.postMessage({ type: 'apply-config', ...config });
   }
 }
 
@@ -73,10 +73,9 @@ export async function addListener(type: string, callback: Function) {
   if (isSourceProps() && IS_XSPLIT) {
     throw new Error('mga bobo');
   }
-
   if (IS_XSPLIT) {
     pluginPropsInstance.on(type, (...args: any) => callback(...args)); // Why dis happening? dunno...
-  } else if (window.opener) {
+  } else {
     callbackStack.push({ type, callback });
   }
 }
@@ -90,7 +89,7 @@ export async function removeListener(type: string, callback: Function) {
 
   if (IS_XSPLIT) {
     pluginPropsInstance.off(type, callback);
-  } else if (window.opener) {
+  } else if (parent.window.opener) {
     const index = callbackStack.findIndex(
       cb => cb.type === type && cb.callback === callback
     );

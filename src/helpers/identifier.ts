@@ -1,12 +1,14 @@
-export function getIdentifier(url: string) {
-  const initialSegments = url.split('embedded/');
+import xjs from 'xjs-framework/dist/xjs-es2015';
 
-  if (initialSegments.length < 2) {
-    return '';
+const { isXsplitShell: IS_XSPLIT } = window.external;
+
+export async function getIdentifier() {
+  if (IS_XSPLIT) {
+    const source = await xjs.Source.getCurrentSource();
+    const id = await source.getId();
+
+    return id;
   }
 
-  const finalSegments = initialSegments[1].split('/');
-  const key = finalSegments[0];
-
-  return key.replace(/^(https|http|file)/gi, '');
+  return location.origin;
 }
