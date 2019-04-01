@@ -8,9 +8,9 @@ import store from '../../../../store';
 import { requestSaveConfig } from '../../../../helpers/coms';
 
 import Section from '../../../../components/Section';
-import Slider from '../../../../components/Slider';
-import Select from '../../../../components/Select';
-import Option from '../../../../components/Select/Option';
+
+import Select from './Select';
+import Slider from './Slider';
 
 import { Visualization } from '../VisualizationSelect/interfaces';
 
@@ -44,52 +44,9 @@ class CustomFields extends React.Component<Props> {
     this.visualizers = require('../../../../visualizers');
   }
 
-  handleChange = (id: string) => (value: any) => {
-    this.setState({ [id]: value });
-  };
-
   handleUpdate = (id: string) => (value: any) => {
     requestSaveConfig({ [id]: value });
   };
-
-  renderSelect(attributes: any) {
-    const { classes } = this.props;
-    const { options, id, label } = attributes;
-
-    return (
-      <div key={id}>
-        <label className={classes.label}>{label}</label>
-        <Select>
-          {options.map((option: any) => (
-            <Option key={option.value} value={option.value}>
-              {option.label}
-            </Option>
-          ))}
-        </Select>
-      </div>
-    );
-  }
-
-  renderSlider(attributes: any) {
-    const { classes } = this.props;
-    const { id, range, label, default: defaultValue } = attributes;
-    const [minValue, maxValue] = range;
-
-    // @TODO: We don't use minValue for now...
-
-    return (
-      <div key={id}>
-        <label className={classes.label}>{label}</label>
-        <Slider
-          value={this.state[id] || defaultValue}
-          maxValue={maxValue}
-          onChange={this.handleChange(id)}
-          onUpdate={this.handleUpdate(id)}
-          knob
-        />
-      </div>
-    );
-  }
 
   render() {
     const { visualization, classes } = this.props;
@@ -107,13 +64,26 @@ class CustomFields extends React.Component<Props> {
           label="Visualization Settings"
           contentClassName={classes.sectionContents}
         >
-          {fields.map((field: any) => {
+          {fields.map((field: any, index: number) => {
             switch (field.type) {
               case 'slider':
-                return this.renderSlider(omit(field, ['type']));
+                return (
+                  <Slider
+                    {...omit(field, ['type'])}
+                    classes={classes}
+                    onUpdate={this.handleUpdate}
+                    key={`${field.type}-${index}`}
+                  />
+                );
 
               case 'select':
-                return this.renderSelect(omit(field, ['type']));
+                return (
+                  <Select
+                    {...omit(field, ['type'])}
+                    classes={classes}
+                    key={`${field.type}-${index}`}
+                  />
+                );
             }
           })}
         </Section>
