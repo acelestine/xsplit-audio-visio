@@ -29,7 +29,8 @@ const { useState, useEffect } = React;
 
 function AudioSelect({ classes, value }: Props) {
   const [items, setItems] = useState(([] as unknown) as AudioOutput[]);
-  const [selectedItem, setSelectedItem] = useState(value || 'default');
+  const [selectedItem, setSelectedItem] = useState(value);
+  const [defaultDevice, setDefaultDevice] = useState('');
 
   useEffect(() => {
     // @TODO: Confirm with @miyb if we would only want to capture audio output devices (ie. sounds from the PC)
@@ -56,17 +57,18 @@ function AudioSelect({ classes, value }: Props) {
           });
 
         // Get device Id of XSplitBroadcaster... which is now "Default"
-        const defaultDevice = audioOutputs.find(
-          (device: any) => device.label === 'Default'
-        ) || { value: 'default' };
+        const xsplitDevice = audioOutputs.find((device: any) => {
+          return device.label === 'Default';
+        }) || { value: 'default' };
 
         setItems(audioOutputs);
-        setSelectedItem(value || defaultDevice.value);
+        setSelectedItem(value || xsplitDevice.value);
+        setDefaultDevice(xsplitDevice.value);
       });
   }, []);
 
   useEffect(() => {
-    setSelectedItem(value || 'default');
+    setSelectedItem(value || defaultDevice);
   }, [value]);
 
   function handleChange(

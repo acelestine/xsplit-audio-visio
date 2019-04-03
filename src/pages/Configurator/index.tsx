@@ -68,6 +68,8 @@ const Configuration = ({ classes, isLoading }: Props) => {
     }
   }, []);
 
+  console.log(audio);
+
   return (
     <div className={classes.container}>
       <div className={cx(classes.loading, { [classes.show]: isLoading })}>
