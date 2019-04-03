@@ -68,8 +68,6 @@ const Configuration = ({ classes, isLoading }: Props) => {
     }
   }, []);
 
-  console.log(audio);
-
   return (
     <div className={classes.container}>
       <div className={cx(classes.loading, { [classes.show]: isLoading })}>
@@ -80,7 +78,8 @@ const Configuration = ({ classes, isLoading }: Props) => {
         <AudioSelect value={audio} />
         <VisualizationSelect value={visualization} />
       </Section>
-      {config && <CustomFields config={config} />}
+      {/* @TODO: Revert {config && <CustomFields config={config} />} */}
+      {<CustomFields config={config} />}
     </div>
   );
 };

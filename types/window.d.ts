@@ -5,5 +5,6 @@ declare global {
     store: any;
     GetPlayState: any;
     init: any;
+    tester: any;
   }
 }

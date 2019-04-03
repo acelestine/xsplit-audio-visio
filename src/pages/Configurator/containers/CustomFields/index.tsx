@@ -11,6 +11,7 @@ import Section from '../../../../components/Section';
 
 import Select from './Select';
 import Slider from './Slider';
+import ColorPicker from './ColorPicker';
 
 import { Visualization } from '../VisualizationSelect/interfaces';
 
@@ -49,7 +50,9 @@ class CustomFields extends React.Component<Props> {
   };
 
   render() {
-    const { visualization, classes } = this.props;
+    // @TODO: Revert: const { visualization, classes } = this.props;
+    const { classes } = this.props;
+    const visualization = { label: 'Bars', value: 'bars' };
 
     if (
       visualization &&
@@ -79,6 +82,15 @@ class CustomFields extends React.Component<Props> {
               case 'select':
                 return (
                   <Select
+                    {...omit(field, ['type'])}
+                    classes={classes}
+                    key={`${field.type}-${index}`}
+                  />
+                );
+
+              case 'colorpicker':
+                return (
+                  <ColorPicker
                     {...omit(field, ['type'])}
                     classes={classes}
                     key={`${field.type}-${index}`}
