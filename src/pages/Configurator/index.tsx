@@ -65,6 +65,8 @@ const Configuration = ({ classes, isLoading }: Props) => {
         customTabs: ['Visualization'],
         tabOrder: ['Visualization', 'Layout', 'Color', 'Transition'],
       });
+
+      propsWindow.resize(360, 500);
     }
   }, []);
 
