@@ -42,8 +42,7 @@ function render({ audio = 'default', sensitivity = 5, color = '#F00' }) {
 
         analyser.getByteFrequencyData(dataArray);
 
-        ctx.fillStyle = '#000';
-        ctx.fillRect(0, 0, WIDTH, HEIGHT);
+        ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
         for (let i = 0; i < bufferLength; i++) {
           barHeight = dataArray[i];
