@@ -11,6 +11,10 @@ const outputFolder = path.join(process.cwd(), 'output');
 function main() {
   const source = parseHTML(path.join(appFolder, 'index.html'));
 
+  if (!fs.existsSync(outputFolder)) {
+    fsExtra.mkdir(outputFolder);
+  }
+
   fsExtra.removeSync(path.join(outputFolder, 'audio-visio.html'));
   fs.writeFileSync(path.join(outputFolder, 'audio-visio.html'), source);
   console.info(
