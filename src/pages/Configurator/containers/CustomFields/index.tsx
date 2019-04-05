@@ -50,9 +50,7 @@ class CustomFields extends React.Component<Props> {
   };
 
   render() {
-    // @TODO: Revert: const { visualization, classes } = this.props;
-    const { classes } = this.props;
-    const visualization = { label: 'Bars', value: 'bars' };
+    const { visualization, classes } = this.props;
 
     if (
       visualization &&

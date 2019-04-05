@@ -80,8 +80,7 @@ const Configuration = ({ classes, isLoading }: Props) => {
         <AudioSelect value={audio} />
         <VisualizationSelect value={visualization} />
       </Section>
-      {/* @TODO: Revert {config && <CustomFields config={config} />} */}
-      {<CustomFields config={config} />}
+      {config && <CustomFields config={config} />}
     </div>
   );
 };
