@@ -20,7 +20,7 @@ function CustomSlider(props: any) {
         value={value}
         maxValue={maxValue}
         onChange={handleChange}
-        onUpdate={onUpdate(id)}
+        onUpdate={onUpdate}
         knob
       />
     </div>

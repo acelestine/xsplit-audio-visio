@@ -6,7 +6,7 @@ interface Props {
   classes: any;
   label: string;
   value: string;
-  onChange: (hex: string) => void;
+  onUpdate: (hex: string) => void;
 }
 
 const styles = {
@@ -47,7 +47,7 @@ const styles = {
 
 const { useState, useEffect } = React;
 
-function ColorPicker({ classes, label, value = '#FF3D40', onChange }: any) {
+function ColorPicker({ classes, label, value = '#FF3D40', onUpdate }: any) {
   const [isColorPickerVisible, setColorPickerVisibility] = useState(false);
   const [color, setColor] = useState(value);
 
@@ -64,11 +64,11 @@ function ColorPicker({ classes, label, value = '#FF3D40', onChange }: any) {
   }
 
   function handleColorChange(color: ColorResult) {
-    if (onChange) {
-      onChange(color.hex);
-    } else {
-      setColor(color.hex);
+    if (onUpdate) {
+      onUpdate(color.hex);
     }
+
+    setColor(color.hex);
   }
 
   return (

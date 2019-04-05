@@ -74,7 +74,7 @@ class CustomFields extends React.Component<Props> {
                   <Slider
                     {...omit(field, ['type'])}
                     classes={classes}
-                    onUpdate={this.handleUpdate}
+                    onUpdate={this.handleUpdate(field.id)}
                     key={`${field.type}-${index}`}
                   />
                 );
@@ -93,6 +93,7 @@ class CustomFields extends React.Component<Props> {
                   <ColorPicker
                     {...omit(field, ['type'])}
                     classes={classes}
+                    onUpdate={this.handleUpdate(field.id)}
                     key={`${field.type}-${index}`}
                   />
                 );
