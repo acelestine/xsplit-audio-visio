@@ -52,13 +52,16 @@ function render({ audio = 'default', sensitivity = 5, color = '#F00' }) {
           // const b = 50;
 
           // ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
-          ctx.fillStyle = color;
-          ctx.fillRect(
-            x,
-            HEIGHT - barHeight * sensitivity,
-            barWidth,
-            barHeight * sensitivity
-          );
+
+          if (color) {
+            ctx.fillStyle = color;
+            ctx.fillRect(
+              x,
+              HEIGHT - barHeight * sensitivity,
+              barWidth,
+              barHeight * sensitivity
+            );
+          }
 
           x += barWidth + 1;
         }
@@ -88,7 +91,7 @@ function handlePropsChange({ detail }: any) {
 }
 
 export default function(obj: any) {
-  const { audio, sensitivity = 50, color = '#F00' } = obj;
+  const { audio, sensitivity = 50, color = '' } = obj;
 
   canvas = document.getElementById('canvas');
   canvas.width = window.innerWidth;
