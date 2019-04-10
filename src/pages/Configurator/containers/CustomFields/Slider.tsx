@@ -5,9 +5,17 @@ import Slider from '../../../../components/Slider';
 const { useState } = React;
 
 function CustomSlider(props: any) {
-  const { classes, onUpdate, id, range, label, default: defaultValue } = props;
+  const {
+    classes,
+    onUpdate,
+    id,
+    range,
+    label,
+    value: initialValue,
+    default: defaultValue,
+  } = props;
   const [minValue, maxValue] = range;
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState(initialValue || defaultValue);
 
   function handleChange(value: any) {
     setValue(value);

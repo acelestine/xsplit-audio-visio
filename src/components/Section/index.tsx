@@ -5,7 +5,7 @@ import cx from 'classnames';
 const styles = (theme: any) => ({
   container: {
     display: 'block',
-    margin: ['0.5em', '0.8em'],
+    margin: ['0.5em'],
     paddingTop: '1.6em',
     position: 'relative',
     marginBottom: '1.6em',

@@ -39,7 +39,7 @@ class CustomFields extends React.Component<Props> {
 
   visualizers: any;
 
-  state = { ...this.props.config } as any;
+  state = { config: this.props.config } as any;
 
   componentDidMount() {
     this.visualizers = require('../../../../visualizers');
@@ -51,6 +51,7 @@ class CustomFields extends React.Component<Props> {
 
   render() {
     const { visualization, classes } = this.props;
+    const { config } = this.state; // Prevent re-updating the configs if need be po.
 
     if (
       visualization &&
@@ -74,6 +75,7 @@ class CustomFields extends React.Component<Props> {
                     classes={classes}
                     onUpdate={this.handleUpdate(field.id)}
                     key={`${field.type}-${index}`}
+                    value={config[field.id]}
                   />
                 );
 
@@ -83,6 +85,7 @@ class CustomFields extends React.Component<Props> {
                     {...omit(field, ['type'])}
                     classes={classes}
                     key={`${field.type}-${index}`}
+                    value={config[field.id]}
                   />
                 );
 
@@ -93,6 +96,7 @@ class CustomFields extends React.Component<Props> {
                     classes={classes}
                     onUpdate={this.handleUpdate(field.id)}
                     key={`${field.type}-${index}`}
+                    value={config[field.id]}
                   />
                 );
             }
@@ -113,7 +117,7 @@ const mapState = (state: any, props: any) => ({
   ...visualizationSelector(state, props),
 });
 
-export default compose(
+export default compose<any>(
   connect(mapState),
   withStyles(styles)
 )(CustomFields);

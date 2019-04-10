@@ -24,8 +24,13 @@ const styles = (theme: any) => ({
       background: theme.backgroundColor,
       fontSize: 12,
       userSelect: 'none',
+      margin: 0,
+      padding: 0,
     },
     label: { color: theme.labelColor },
+  },
+  container: {
+    marginTop: 14,
   },
   sectionContents: {
     '& > div > div:not(:last-of-type)': {
@@ -89,7 +94,7 @@ const mapState = ({ visualizations: { isLoading } }: any) => ({
   isLoading,
 });
 
-export default compose(
+export default compose<any>(
   connect(mapState),
   withStyles(styles)
 )(Configuration);

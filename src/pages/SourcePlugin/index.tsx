@@ -22,12 +22,12 @@ const SourcePlugin = () => {
   useEffect(() => {
     window.GetPlayState = () => {};
 
-    xjs.Source.getCurrentSource().then((currentItem: any) => {
-      setItem(currentItem);
-      currentItem.setBrowserCustomSize(
+    xjs.Source.getCurrentSource().then((currentSource: any) => {
+      setItem(currentSource);
+      currentSource.setBrowserCustomSize(
         xjs.Rectangle.fromDimensions(1920, 1080)
       );
-      currentItem.setMute(true);
+      currentSource.setMute(true);
     });
   }, []);
 
