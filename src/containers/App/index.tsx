@@ -30,10 +30,14 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    const meta = document.createElement('meta');
-    meta.setAttribute('name', 'xsplit:config-url');
-    meta.setAttribute('content', getMetaContent());
-    document.head.appendChild(meta);
+    const content = getMetaContent();
+
+    if (content) {
+      const meta = document.createElement('meta');
+      meta.setAttribute('name', 'xsplit:config-url');
+      meta.setAttribute('content', content);
+      document.head.appendChild(meta);
+    }
 
     if (window.external.isXsplitShell) {
       xjs.ready().then(() => {
