@@ -9,7 +9,7 @@ const path = require('path');
   ));
 
   new Packager({
-    appFolder: path.join(process.cwd(), 'build') + '/',
+    appFolder: path.join(process.cwd(), 'output') + '/',
     buildsFolder: path.join(process.cwd(), 'output') + '/',
   }).run({
     ext: 'plg',
