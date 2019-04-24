@@ -9,8 +9,8 @@
 /coverage
 
 # production
-/build
 /output/*.plg
+/build/
 
 # misc
 .DS_Store

@@ -28,6 +28,7 @@ const SourcePlugin = () => {
         xjs.Rectangle.fromDimensions(1920, 1080)
       );
       currentSource.setMute(true);
+      currentSource.setName('XSplit Audio Visio');
     });
   }, []);
 

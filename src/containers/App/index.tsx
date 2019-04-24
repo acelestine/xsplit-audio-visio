@@ -7,22 +7,6 @@ import Configurator from '../../pages/Configurator';
 
 import theme from '../../themes/default';
 
-function getMetaContent() {
-  if (location.origin !== 'file://') {
-    return location.origin;
-  }
-
-  const captured = /.+\/([\w\W]+)\.(\w+)/gm.exec(location.href);
-
-  if (captured) {
-    const [fullPath, filename, extension] = captured;
-
-    return `./${filename}.${extension}`;
-  }
-
-  return '';
-}
-
 class App extends React.Component {
   state = {
     isInitialized: false,
@@ -30,15 +14,6 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    const content = getMetaContent();
-
-    if (content) {
-      const meta = document.createElement('meta');
-      meta.setAttribute('name', 'xsplit:config-url');
-      meta.setAttribute('content', content);
-      document.head.appendChild(meta);
-    }
-
     if (window.external.isXsplitShell) {
       xjs.ready().then(() => {
         this.setState({

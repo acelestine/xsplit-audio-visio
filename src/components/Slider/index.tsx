@@ -200,11 +200,12 @@ class Slider extends React.Component<Props, State> {
   };
 
   handleMouseUp = (event: any) => {
-    this.mouseDown = false;
-
-    if (this.props.onUpdate) {
+    if (this.props.onUpdate && this.mouseDown) {
       this.props.onUpdate(this.state.value);
     }
+
+    // @TODO: Datarace is VERY VERY REAL here
+    this.mouseDown = false;
   };
 
   handleMouseDown = (event: React.MouseEvent) => {

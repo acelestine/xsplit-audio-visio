@@ -32,7 +32,7 @@
     "build": "react-scripts build && node tools/package.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "package:dev": "react-scripts build && node tools/buildPlgDev.js"
+    "package:dev": "react-scripts build && node tools/after.js && node tools/buildPlgDev.js"
   },
   "eslintConfig": {
     "extends": "react-app"
