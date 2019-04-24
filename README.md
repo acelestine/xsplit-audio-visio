@@ -1,8 +1,8 @@
-# XSplit Audio Visio
+# Audio Visualizer
 
-The XSplit Audio Visualizer Prototype
+The XSplit Audio Visualizer Plugin
 
-WIP!
+WIP! And is still sort of a prototype!
 
 ### Project src layout
 

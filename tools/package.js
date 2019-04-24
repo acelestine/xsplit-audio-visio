@@ -15,10 +15,10 @@ function main() {
     fsExtra.mkdir(outputFolder);
   }
 
-  fsExtra.removeSync(path.join(outputFolder, 'audio-visio.html'));
-  fs.writeFileSync(path.join(outputFolder, 'audio-visio.html'), source);
+  fsExtra.removeSync(path.join(outputFolder, 'audio-visualizer.html'));
+  fs.writeFileSync(path.join(outputFolder, 'audio-visualizer.html'), source);
   console.info(
-    'Finished writing to: ' + path.join(outputFolder, 'audio-visio.html')
+    'Finished writing to: ' + path.join(outputFolder, 'audio-visualizer.html')
   );
 }
 
