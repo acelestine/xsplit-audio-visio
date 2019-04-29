@@ -24,6 +24,7 @@ interface Props {
 const styles = {
   label: {
     paddingRight: '1em',
+    minWidth: 76,
   },
   sectionContents: {
     '& > div > div:not(:last-of-type)': {
@@ -60,7 +61,6 @@ class CustomFields extends React.Component<Props> {
     ) {
       const { fields } = this.visualizers[visualization.label];
 
-      // @TODO: Figure out how to pre-populate the fields with value if ever user already had some saved in the config
       return (
         <Section
           label="Visualization Settings"
@@ -75,7 +75,11 @@ class CustomFields extends React.Component<Props> {
                     classes={classes}
                     onUpdate={this.handleUpdate(field.id)}
                     key={`${field.type}-${index}`}
-                    value={config[field.id]}
+                    value={
+                      config[field.id] === undefined
+                        ? field.default
+                        : config[field.id]
+                    }
                   />
                 );
 
@@ -84,8 +88,13 @@ class CustomFields extends React.Component<Props> {
                   <Select
                     {...omit(field, ['type'])}
                     classes={classes}
+                    onChange={this.handleUpdate(field.id)}
                     key={`${field.type}-${index}`}
-                    value={config[field.id]}
+                    value={
+                      config[field.id] === undefined
+                        ? field.default
+                        : config[field.id]
+                    }
                   />
                 );
 
@@ -96,7 +105,11 @@ class CustomFields extends React.Component<Props> {
                     classes={classes}
                     onUpdate={this.handleUpdate(field.id)}
                     key={`${field.type}-${index}`}
-                    value={config[field.id]}
+                    value={
+                      config[field.id] === undefined
+                        ? field.default
+                        : config[field.id]
+                    }
                   />
                 );
             }

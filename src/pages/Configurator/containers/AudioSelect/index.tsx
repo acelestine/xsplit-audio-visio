@@ -33,7 +33,6 @@ function AudioSelect({ classes, value }: Props) {
   const [defaultDevice, setDefaultDevice] = useState('');
 
   useEffect(() => {
-    // @TODO: Confirm with @miyb if we would only want to capture audio output devices (ie. sounds from the PC)
     navigator.mediaDevices
       .enumerateDevices()
       .then((devices: MediaDeviceInfo[]) => {
@@ -41,7 +40,8 @@ function AudioSelect({ classes, value }: Props) {
           .filter(
             (device: MediaDeviceInfo) =>
               device.kind === 'audioinput' &&
-              (device.label !== '' || device.deviceId !== 'default')
+              device.label !== '' &&
+              device.deviceId !== 'default'
           )
           .map((device: MediaDeviceInfo) => ({
             value: device.deviceId,
@@ -75,6 +75,7 @@ function AudioSelect({ classes, value }: Props) {
     event: React.FormEvent<HTMLSelectElement>,
     value: string
   ) {
+    event.preventDefault();
     setSelectedItem(value);
     requestSaveConfig({ audio: value });
   }

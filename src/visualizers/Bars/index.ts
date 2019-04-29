@@ -16,8 +16,22 @@ export default {
       id: 'color',
       label: 'Color',
       type: 'colorpicker',
-      default: '#F00',
+      default: '#F47373',
       tooltip: 'Select the color of the visualizer',
+    },
+    {
+      id: 'bars',
+      label: 'Bars Count',
+      type: 'select',
+      options: [
+        { value: 8, label: 8 },
+        { value: 16, label: 16 },
+        { value: 32, label: 32 },
+        { value: 64, label: 64 },
+      ],
+      default: 8,
+      step: 1,
+      tooltip: 'Specify the number of bars that the plugin would render',
     },
   ],
 };
