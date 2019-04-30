@@ -18,7 +18,7 @@
   <UseEmbeddedConfig>true</UseEmbeddedConfig>
   <MinCompatibleVersion>3.4.1805.1602</MinCompatibleVersion>
   <MinFxVersion_Dev>3.8.1916.1101</MinFxVersion_Dev>
-  <Version_Dev>3.8.1916.3001</Version_Dev>
+  <Version_Dev>3.8.1916.3002</Version_Dev>
   <MinFxVersion>3.8.1904.1201</MinFxVersion>
-  <Version>3.8.1904.3001</Version>
+  <Version>3.8.1904.3002</Version>
 </config>
