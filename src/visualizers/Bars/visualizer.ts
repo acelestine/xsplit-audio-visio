@@ -85,7 +85,12 @@ function computeSensitivity(value: number) {
 }
 
 function handlePropsChange({ detail }: any) {
-  const { audio, sensitivity, color, bars } = detail;
+  const {
+    audio = 'default',
+    sensitivity = 50,
+    color = '#F47373',
+    bars = 8,
+  } = detail;
 
   if (canvas) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -100,6 +105,7 @@ export default function(obj: any) {
   canvas = document.getElementById('canvas');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+
   ctx = canvas.getContext('2d');
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);

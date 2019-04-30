@@ -40,19 +40,31 @@ class CustomFields extends React.Component<Props> {
 
   visualizers: any;
 
-  state = { config: this.props.config } as any;
+  state = {
+    config: this.props.config,
+    visualization: this.props.visualization,
+  } as any;
+
+  static getDerivedStateFromProps(props: any, state: any) {
+    if (props.visualization !== state.visualization) {
+      return props;
+    }
+
+    return state;
+  }
 
   componentDidMount() {
     this.visualizers = require('../../../../visualizers');
   }
 
   handleUpdate = (id: string) => (value: any) => {
-    requestSaveConfig({ [id]: value });
+    requestSaveConfig({ ...this.state.config, [id]: value });
   };
 
   render() {
     const { visualization, classes } = this.props;
     const { config } = this.state; // Prevent re-updating the configs if need be po.
+
 
     if (
       visualization &&

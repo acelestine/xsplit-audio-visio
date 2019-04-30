@@ -60,7 +60,7 @@ const { useEffect } = React;
 
 const Configuration = ({ classes, isLoading }: Props) => {
   const config = useConfig();
-  const { audio, visualization } = (config || {}) as any;
+  const { audio, visualizer } = (config || {}) as any;
 
   useEffect(() => {
     if (window.external.isXsplitShell) {
@@ -75,6 +75,7 @@ const Configuration = ({ classes, isLoading }: Props) => {
     }
   }, []);
 
+
   return (
     <div className={classes.container}>
       <div className={cx(classes.loading, { [classes.show]: isLoading })}>
@@ -83,7 +84,7 @@ const Configuration = ({ classes, isLoading }: Props) => {
 
       <Section label="General" contentClassName={classes.sectionContents}>
         <AudioSelect value={audio} />
-        <VisualizationSelect value={visualization} />
+        <VisualizationSelect value={visualizer} />
       </Section>
       {config && <CustomFields config={config} />}
     </div>

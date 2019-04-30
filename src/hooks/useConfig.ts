@@ -10,7 +10,6 @@ const { isXsplitShell: IS_XSPLIT } = window.external;
 const { useState, useEffect } = React;
 
 export default function useConfig(callback?: Function) {
-  const [initialized, setInitialized] = useState(false); // @HACK
   const [config, setConfig] = useState(null as any);
 
   // This will only be used by the source plugin
@@ -82,10 +81,8 @@ export default function useConfig(callback?: Function) {
               ...initialConfig,
               visualizer: 'bars',
               audio: '',
-              color: '#F47373',
             };
 
-        setInitialized(true);
         setConfig(computedConfig);
 
         if (callback) {
@@ -108,7 +105,7 @@ export default function useConfig(callback?: Function) {
     return () => {
       window.removeEventListener('storage', handleStorageEvent);
     };
-  }, [initialized]);
+  }, []);
 
   return config;
 }

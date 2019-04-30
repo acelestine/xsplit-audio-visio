@@ -2,13 +2,16 @@ import * as React from 'react';
 import { default as InitBars } from '../visualizers/Bars/visualizer';
 import { default as InitWave } from '../visualizers/Wave/visualizer';
 
-import { addListener, removeListener } from '../helpers/coms';
-
-const { useState, useEffect } = React;
+const { useEffect } = React;
 
 export default function usePluginInit(config: any) {
-  const { visualizer = 'bars' } = config;
+  const { visualizer } = config;
+
   useEffect(() => {
+    if (!visualizer) {
+      return;
+    }
+
     switch (visualizer) {
       case 'bars':
         InitBars(config);
@@ -21,6 +24,7 @@ export default function usePluginInit(config: any) {
       default:
       // @TODO: Handle dynamic visualizers
     }
-  });
+  }, [visualizer]);
+
   return config;
 }
