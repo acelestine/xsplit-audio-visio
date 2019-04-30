@@ -8,14 +8,7 @@ const { useState, useEffect } = React;
 
 const SourcePlugin = () => {
   const [item, setItem] = useState(null);
-  const config = useConfig((obj: any) => {
-    const event = new CustomEvent('props-change', { detail: obj });
-    document.dispatchEvent(event);
-
-    if (item) {
-      (item as any).saveConfig(obj);
-    }
-  });
+  const config = useConfig();
 
   usePluginInit(config || {});
 
@@ -31,6 +24,16 @@ const SourcePlugin = () => {
       currentSource.setName('Audio Visualizer');
     });
   }, []);
+
+  useEffect(() => {
+    const event = new CustomEvent('props-change', { detail: config });
+
+    document.dispatchEvent(event);
+
+    if (item) {
+      (item as any).saveConfig(config);
+    }
+  }, [config]);
 
   return <canvas id="canvas" width={1920} height={1080} />;
 };

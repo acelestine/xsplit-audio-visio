@@ -6,7 +6,12 @@ let audioCtx = new AudioContext();
 let canvas: any;
 let ctx: any;
 
-function render({ audio = 'default', sensitivity = 5, color = '#F00' }) {
+function render({
+  audio = 'default',
+  sensitivity = 5,
+  color = '#F47373',
+  bars = 8,
+}) {
   navigator.mediaDevices
     .getUserMedia({
       audio: {
@@ -18,20 +23,19 @@ function render({ audio = 'default', sensitivity = 5, color = '#F00' }) {
       audioCtx = new AudioContext();
       const src = audioCtx.createMediaStreamSource(stream);
       const analyser = audioCtx.createAnalyser();
+      const WIDTH = canvas.width;
+      const HEIGHT = canvas.height;
 
       src.connect(analyser);
       analyser.connect(audioCtx.destination);
 
-      analyser.fftSize = 256;
+      analyser.fftSize = bars * 4; // From MDN: 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, and 32768.
 
-      const bufferLength = analyser.frequencyBinCount;
+      const bufferLength = analyser.frequencyBinCount; // half of fftSize
 
-      const dataArray = new Uint8Array(bufferLength);
+      const dataArray = new Uint8Array(bufferLength); // Create array of size bufferLength initialized with 0s
 
-      const WIDTH = canvas.width;
-      const HEIGHT = canvas.height;
-
-      const barWidth = (WIDTH / bufferLength) * 2.5;
+      const barWidth = (WIDTH / bufferLength) * 2 - 5;
       let barHeight;
       let x = 0;
 
@@ -63,7 +67,7 @@ function render({ audio = 'default', sensitivity = 5, color = '#F00' }) {
             );
           }
 
-          x += barWidth + 1;
+          x += barWidth + 5;
         }
       }
       renderFrame();
@@ -81,26 +85,32 @@ function computeSensitivity(value: number) {
 }
 
 function handlePropsChange({ detail }: any) {
-  const { audio, sensitivity, color } = detail;
+  const {
+    audio = 'default',
+    sensitivity = 50,
+    color = '#F47373',
+    bars = 8,
+  } = detail;
 
   if (canvas) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  render({ audio, sensitivity: computeSensitivity(sensitivity), color });
+  render({ audio, sensitivity: computeSensitivity(sensitivity), color, bars });
 }
 
 export default function(obj: any) {
-  const { audio, sensitivity = 50, color = '' } = obj;
+  const { audio, sensitivity = 50, color = '', bars = 8 } = obj;
 
   canvas = document.getElementById('canvas');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+
   ctx = canvas.getContext('2d');
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   document.addEventListener('props-change', handlePropsChange);
-  render({ audio, sensitivity: computeSensitivity(sensitivity), color });
+  render({ audio, sensitivity: computeSensitivity(sensitivity), color, bars });
 
   return () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);

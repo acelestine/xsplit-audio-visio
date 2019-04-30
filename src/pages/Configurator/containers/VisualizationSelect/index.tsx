@@ -47,10 +47,15 @@ function VisualizationSelect({
     value && update('selected', value);
   }, []);
 
+  useEffect(() => {
+    update('selected', value);
+  }, [value]);
+
   function handleChange(
     event: React.FormEvent<HTMLSelectElement>,
     value: string
   ) {
+    event.preventDefault();
     select(value);
   }
 

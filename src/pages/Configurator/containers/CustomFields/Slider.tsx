@@ -1,8 +1,17 @@
 import * as React from 'react';
+import withStyles from 'react-jss';
 
 import Slider from '../../../../components/Slider';
 
 const { useState } = React;
+
+const styles = {
+  container: {
+    alignItems: 'center',
+    display: 'flex',
+    position: 'relative',
+  },
+};
 
 function CustomSlider(props: any) {
   const {
@@ -22,7 +31,7 @@ function CustomSlider(props: any) {
   }
 
   return (
-    <div key={id}>
+    <div key={id} className={classes.container}>
       <label className={classes.label}>{label}</label>
       <Slider
         value={value}
@@ -35,4 +44,4 @@ function CustomSlider(props: any) {
   );
 }
 
-export default CustomSlider;
+export default withStyles(styles)(CustomSlider);
