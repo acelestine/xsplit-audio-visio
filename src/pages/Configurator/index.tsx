@@ -72,6 +72,8 @@ const Configuration = ({ classes, isLoading }: Props) => {
       });
 
       propsWindow.resize(360, 500);
+
+      document.oncontextmenu = () => false;
     }
   }, []);
 
