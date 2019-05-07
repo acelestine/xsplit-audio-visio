@@ -58,13 +58,14 @@ class CustomFields extends React.Component<Props> {
   }
 
   handleUpdate = (id: string) => (value: any) => {
-    requestSaveConfig({ ...this.state.config, [id]: value });
+    this.setState({ config: { ...this.state.config, [id]: value } }, () =>
+      requestSaveConfig({ ...this.state.config, [id]: value })
+    );
   };
 
   render() {
     const { visualization, classes } = this.props;
     const { config } = this.state; // Prevent re-updating the configs if need be po.
-
 
     if (
       visualization &&
