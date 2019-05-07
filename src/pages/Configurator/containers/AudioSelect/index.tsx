@@ -37,19 +37,34 @@ function AudioSelect({ classes, value }: Props) {
       .enumerateDevices()
       .then((devices: MediaDeviceInfo[]) => {
         const audioOutputs = devices
-          .filter(
-            (device: MediaDeviceInfo) =>
-              device.kind === 'audioinput' &&
-              device.label !== '' &&
-              device.deviceId !== 'default'
-          )
-          .map((device: MediaDeviceInfo) => ({
-            value: device.deviceId,
-            label:
-              device.label === 'XSplitBroadcaster (DirectShow)'
-                ? 'Default'
-                : device.label.replace(' (DirectShow)', ''),
-          }))
+          .filter((device: MediaDeviceInfo) => {
+            const isXBCInput =
+              device.label === 'XSplitBroadcaster (DirectShow)';
+            const isNotDirectShow = device.label.indexOf('(DirectShow)') === -1;
+            const isValidLabel =
+              device.label !== '' && (isXBCInput || isNotDirectShow);
+
+            return (
+              // device.deviceId === 'default' || // We'll include default devices, both audiooutput and audioinput
+              (device.kind === 'audioinput' && isValidLabel)
+            );
+          })
+          .map((device: MediaDeviceInfo) => {
+            let label = device.label;
+
+            if (device.label === 'XSplitBroadcaster (DirectShow)') {
+              label = 'Default';
+            } else if (device.deviceId === 'default') {
+              const type =
+                device.kind === 'audioinput' ? 'Microphone' : 'Speaker';
+              label = `Default ${type}`;
+            }
+
+            return {
+              value: device.deviceId,
+              label,
+            };
+          })
           .sort((left, right) => {
             if (left.label === 'Default') return -1;
 
