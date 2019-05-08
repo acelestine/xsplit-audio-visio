@@ -45,15 +45,14 @@ function AudioSelect({ classes, value }: Props) {
               device.label !== '' && (isXBCInput || isNotDirectShow);
 
             return (
-              // device.deviceId === 'default' || // We'll include default devices, both audiooutput and audioinput
-              (device.kind === 'audioinput' && isValidLabel)
+              (device.kind === 'audioinput' && isValidLabel && device.deviceId !== 'communications')
             );
           })
           .map((device: MediaDeviceInfo) => {
             let label = device.label;
 
             if (device.label === 'XSplitBroadcaster (DirectShow)') {
-              label = 'Default';
+              label = 'Default (All Audio)';
             } else if (device.deviceId === 'default') {
               const type =
                 device.kind === 'audioinput' ? 'Microphone' : 'Speaker';
