@@ -5,6 +5,7 @@
 let audioCtx = new AudioContext();
 let canvas: any;
 let ctx: any;
+let lastReq: any;
 
 function render({
   audio = 'default',
@@ -19,8 +20,11 @@ function render({
       },
     })
     .then(stream => {
+      // Cleanup
       audioCtx.close();
       audioCtx = new AudioContext();
+      cancelAnimationFrame(lastReq);
+
       const src = audioCtx.createMediaStreamSource(stream);
       const analyser = audioCtx.createAnalyser();
       const WIDTH = canvas.width;
@@ -40,7 +44,7 @@ function render({
       let x = 0;
 
       function renderFrame() {
-        requestAnimationFrame(renderFrame);
+        lastReq = requestAnimationFrame(renderFrame);
 
         x = 0;
 
@@ -50,12 +54,6 @@ function render({
 
         for (let i = 0; i < bufferLength; i++) {
           barHeight = dataArray[i];
-
-          // const r = barHeight + 25 * (i / bufferLength);
-          // const g = 250 * (i / bufferLength);
-          // const b = 50;
-
-          // ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
 
           if (color) {
             ctx.fillStyle = color;
