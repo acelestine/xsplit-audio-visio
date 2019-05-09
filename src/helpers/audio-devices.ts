@@ -1,6 +1,7 @@
 export interface AudioDevice {
   value: string;
   label: string;
+  deviceId: string;
 }
 
 export async function enumerate(): Promise<AudioDevice[]> {
@@ -11,7 +12,7 @@ export async function enumerate(): Promise<AudioDevice[]> {
       const isNotDirectShow = device.label.indexOf('(DirectShow)') === -1;
       const isValidLabel =
         device.label !== '' && (isXBCInput || isNotDirectShow);
-
+      console.log(device);
       return (
         device.kind === 'audioinput' &&
         isValidLabel &&
@@ -22,19 +23,19 @@ export async function enumerate(): Promise<AudioDevice[]> {
       let label = device.label;
 
       if (device.label === 'XSplitBroadcaster (DirectShow)') {
-        label = 'Default';
+        label = 'XBC Audio Devices';
       } else if (device.deviceId === 'default') {
-        const type = device.kind === 'audioinput' ? 'Microphone' : 'Speaker';
-        label = `Default ${type}`;
+        label = `Windows Default Microphone`;
       }
 
       return {
-        value: device.deviceId,
+        value: `${device.kind}::${device.label}`,
+        deviceId: device.deviceId,
         label,
       };
     })
     .sort((left, right) => {
-      if (left.label === 'Default') return -1;
+      if (left.label === 'XBC Audio Devices') return -1;
 
       return left.label > right.label ? 1 : -1;
     });

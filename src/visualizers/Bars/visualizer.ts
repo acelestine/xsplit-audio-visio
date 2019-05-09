@@ -8,7 +8,7 @@ let ctx: any;
 let lastReq: any;
 
 function render({
-  audio = 'default',
+  audio = 'audioinput-Default',
   sensitivity = 5,
   color = '#F47373',
   bars = 8,

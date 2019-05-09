@@ -4,6 +4,7 @@ import xjs from 'xjs-framework/dist/xjs-es2015';
 import { addListener, removeListener } from '../helpers/coms';
 import { isSourceProps } from '../helpers/environment';
 import { getIdentifier } from '../helpers/identifier';
+import * as audioDevices from '../helpers/audio-devices';
 
 const { isXsplitShell: IS_XSPLIT } = window.external;
 
@@ -13,26 +14,47 @@ export default function useConfig(callback?: Function) {
   const [config, setConfig] = useState(null as any);
 
   // This will only be used by the source plugin
-  function handleSaveConfig(config: any) {
-    setConfig(config);
+  async function getDeviceId(ident: string): Promise<string> {
+    const devices: audioDevices.AudioDevice[] = await audioDevices.enumerate();
+    const targetDevice: audioDevices.AudioDevice | undefined = devices.find(
+      (item: audioDevices.AudioDevice) => item.value === ident
+    );
 
-    getIdentifier().then(identifier => {
-      const obj: any = {
-        id: identifier,
-        value: Date.now(),
-        type: 'config',
-      };
+    if (!targetDevice) {
+      console.error(
+        `Audio device with ident: ${ident} does not exist in HTML Plugin instance`
+      );
+      return 'default';
+    }
 
-      if (!IS_XSPLIT) {
-        obj['config'] = config;
-      }
+    return targetDevice.deviceId;
+  }
 
-      localStorage.setItem('xsplit-plugin-event', JSON.stringify(obj));
+  async function handleSaveConfig(newConfig: any) {
+    const audio =
+      newConfig.audio && newConfig.audio !== config.audio
+        ? await getDeviceId(newConfig.audio)
+        : 'default';
 
-      if (callback) {
-        callback(config);
-      }
-    });
+    setConfig({ ...newConfig, audio });
+
+    const identifier = await getIdentifier();
+
+    const obj: any = {
+      id: identifier,
+      value: Date.now(),
+      type: 'config',
+    };
+
+    if (!IS_XSPLIT) {
+      obj['config'] = newConfig;
+    }
+
+    localStorage.setItem('xsplit-plugin-event', JSON.stringify(obj));
+
+    if (callback) {
+      callback(newConfig);
+    }
   }
 
   function createHandleStorageEvent(currentSource: any) {

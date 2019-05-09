@@ -3,6 +3,7 @@ import withStyles from 'react-jss';
 
 import { requestSaveConfig } from '../../../../helpers/coms';
 import { getIdentifier } from '../../../../helpers/identifier';
+import * as audioDevices from '../../../../helpers/audio-devices';
 
 import Select from '../../../../components/Select';
 import Option from '../../../../components/Select/Option';
@@ -34,54 +35,23 @@ function AudioSelect({ classes, value }: Props) {
   const [defaultDevice, setDefaultDevice] = useState('');
 
   useEffect(() => {
-    getIdentifier().then((identifier: string) => {
-      localStorage.setItem(
-        'xsplit-plugin-event',
-        JSON.stringify({
-          id: identifier,
-          value: Date.now(),
-          type: 'get-audio-devices',
-        })
-      );
+    audioDevices.enumerate().then((devices: audioDevices.AudioDevice[]) => {
+      // Get device Id of XSplitBroadcaster... which is now "Default"
+      const xsplitDevice = devices.find((device: any) => {
+        return device.label === 'XBC Audio Devices';
+      }) || { value: 'default' };
+
+      console.log(devices);
+
+      setItems(devices);
+      setSelectedItem(value || xsplitDevice.value);
+      setDefaultDevice(xsplitDevice.value);
     });
-
-    window.addEventListener('storage', handleStorageEvent);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageEvent);
-    };
   }, []);
 
   useEffect(() => {
     setSelectedItem(value || defaultDevice);
   }, [value]);
-
-  async function handleStorageEvent({ newValue, key }: StorageEvent) {
-    if (key !== 'xsplit-plugin-event') {
-      return; // Do nothing
-    }
-
-    try {
-      const data = JSON.parse(newValue as string);
-
-      const identifier = await getIdentifier();
-
-      if (data.id !== identifier || data.type !== 'audio-devices') {
-        return;
-      }
-
-      // Get device Id of XSplitBroadcaster... which is now "Default"
-      const xsplitDevice = data.value.find((device: any) => {
-        return device.label === 'Default';
-      }) || { value: 'default' };
-
-      setItems(data.value);
-      setSelectedItem(value || xsplitDevice.value);
-      setDefaultDevice(xsplitDevice.value);
-    } catch (error) {
-      // Do nothing
-    }
-  }
 
   function handleChange(
     event: React.FormEvent<HTMLSelectElement>,
