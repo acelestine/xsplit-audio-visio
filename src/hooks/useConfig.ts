@@ -20,6 +20,7 @@ export default function useConfig(callback?: Function) {
       const obj: any = {
         id: identifier,
         value: Date.now(),
+        type: 'config',
       };
 
       if (!IS_XSPLIT) {
@@ -49,7 +50,7 @@ export default function useConfig(callback?: Function) {
         const data = JSON.parse(newValue as string);
 
         getIdentifier().then(identifier => {
-          if (data.id !== identifier) {
+          if (data.id !== identifier || data.type !== 'config') {
             return;
           }
 
