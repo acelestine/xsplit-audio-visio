@@ -14,7 +14,9 @@ export default function useConfig(callback?: Function) {
   const [config, setConfig] = useState(null as any);
 
   // This will only be used by the source plugin
-  async function getDeviceId(ident: string): Promise<string> {
+  async function getDeviceId(
+    ident: string = 'audioinput::XSplitBroadcaster (DirectShow)'
+  ): Promise<string> {
     const devices: audioDevices.AudioDevice[] = await audioDevices.enumerate();
     const targetDevice: audioDevices.AudioDevice | undefined = devices.find(
       (item: audioDevices.AudioDevice) => item.value === ident
@@ -31,12 +33,12 @@ export default function useConfig(callback?: Function) {
   }
 
   async function handleSaveConfig(newConfig: any) {
-    const audio =
-      newConfig.audio && newConfig.audio !== config.audio
+    const deviceId =
+      newConfig.audio && newConfig.audio !== (config || {}).audio
         ? await getDeviceId(newConfig.audio)
         : 'default';
 
-    setConfig({ ...newConfig, audio });
+    setConfig({ ...newConfig, deviceId });
 
     const identifier = await getIdentifier();
 
@@ -97,16 +99,18 @@ export default function useConfig(callback?: Function) {
 
     currentSource
       .then((source: any) => source.loadConfig())
-      .then((initialConfig: any) => {
+      .then(async (initialConfig: any) => {
         const computedConfig = initialConfig.visualizer
           ? initialConfig
           : {
               ...initialConfig,
               visualizer: 'bars',
-              audio: '',
+              audio: 'audioinput::XSplitBroadcaster (DirectShow)',
             };
 
-        setConfig(computedConfig);
+        const deviceId = await getDeviceId(computedConfig.audio);
+
+        setConfig({ ...computedConfig, deviceId });
 
         if (callback) {
           callback(computedConfig);

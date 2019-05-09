@@ -8,7 +8,7 @@ let ctx: any;
 let lastReq: any;
 
 function render({
-  audio = 'audioinput-Default',
+  deviceId = 'default',
   sensitivity = 5,
   color = '#F47373',
   bars = 8,
@@ -16,7 +16,7 @@ function render({
   navigator.mediaDevices
     .getUserMedia({
       audio: {
-        deviceId: audio,
+        deviceId,
       },
     })
     .then(stream => {
@@ -84,7 +84,7 @@ function computeSensitivity(value: number) {
 
 function handlePropsChange({ detail }: any) {
   const {
-    audio = 'default',
+    deviceId = 'default',
     sensitivity = 50,
     color = '#F47373',
     bars = 8,
@@ -94,11 +94,16 @@ function handlePropsChange({ detail }: any) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  render({ audio, sensitivity: computeSensitivity(sensitivity), color, bars });
+  render({
+    deviceId,
+    sensitivity: computeSensitivity(sensitivity),
+    color,
+    bars,
+  });
 }
 
 export default function(obj: any) {
-  const { audio, sensitivity = 50, color = '', bars = 8 } = obj;
+  const { deviceId, sensitivity = 50, color = '', bars = 8 } = obj;
 
   canvas = document.getElementById('canvas');
   canvas.width = window.innerWidth;
@@ -108,7 +113,12 @@ export default function(obj: any) {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   document.addEventListener('props-change', handlePropsChange);
-  render({ audio, sensitivity: computeSensitivity(sensitivity), color, bars });
+  render({
+    deviceId,
+    sensitivity: computeSensitivity(sensitivity),
+    color,
+    bars,
+  });
 
   return () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);

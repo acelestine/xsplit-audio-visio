@@ -41,8 +41,6 @@ function AudioSelect({ classes, value }: Props) {
         return device.label === 'XBC Audio Devices';
       }) || { value: 'default' };
 
-      console.log(devices);
-
       setItems(devices);
       setSelectedItem(value || xsplitDevice.value);
       setDefaultDevice(xsplitDevice.value);
