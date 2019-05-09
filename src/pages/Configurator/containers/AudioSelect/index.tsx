@@ -2,6 +2,7 @@ import * as React from 'react';
 import withStyles from 'react-jss';
 
 import { requestSaveConfig } from '../../../../helpers/coms';
+import { getIdentifier } from '../../../../helpers/identifier';
 
 import Select from '../../../../components/Select';
 import Option from '../../../../components/Select/Option';
@@ -33,57 +34,54 @@ function AudioSelect({ classes, value }: Props) {
   const [defaultDevice, setDefaultDevice] = useState('');
 
   useEffect(() => {
-    navigator.mediaDevices
-      .enumerateDevices()
-      .then((devices: MediaDeviceInfo[]) => {
-        const audioOutputs = devices
-          .filter((device: MediaDeviceInfo) => {
-            const isXBCInput =
-              device.label === 'XSplitBroadcaster (DirectShow)';
-            const isNotDirectShow = device.label.indexOf('(DirectShow)') === -1;
-            const isValidLabel =
-              device.label !== '' && (isXBCInput || isNotDirectShow);
+    getIdentifier().then((identifier: string) => {
+      localStorage.setItem(
+        'xsplit-plugin-event',
+        JSON.stringify({
+          id: identifier,
+          value: Date.now(),
+          type: 'get-audio-devices',
+        })
+      );
+    });
 
-            return (
-              (device.kind === 'audioinput' && isValidLabel && device.deviceId !== 'communications')
-            );
-          })
-          .map((device: MediaDeviceInfo) => {
-            let label = device.label;
+    window.addEventListener('storage', handleStorageEvent);
 
-            if (device.label === 'XSplitBroadcaster (DirectShow)') {
-              label = 'Default (All Audio)';
-            } else if (device.deviceId === 'default') {
-              const type =
-                device.kind === 'audioinput' ? 'Microphone' : 'Speaker';
-              label = `Default ${type}`;
-            }
-
-            return {
-              value: device.deviceId,
-              label,
-            };
-          })
-          .sort((left, right) => {
-            if (left.label === 'Default') return -1;
-
-            return left.label > right.label ? 1 : -1;
-          });
-
-        // Get device Id of XSplitBroadcaster... which is now "Default"
-        const xsplitDevice = audioOutputs.find((device: any) => {
-          return device.label === 'Default';
-        }) || { value: 'default' };
-
-        setItems(audioOutputs);
-        setSelectedItem(value || xsplitDevice.value);
-        setDefaultDevice(xsplitDevice.value);
-      });
+    return () => {
+      window.removeEventListener('storage', handleStorageEvent);
+    };
   }, []);
 
   useEffect(() => {
     setSelectedItem(value || defaultDevice);
   }, [value]);
+
+  async function handleStorageEvent({ newValue, key }: StorageEvent) {
+    if (key !== 'xsplit-plugin-event') {
+      return; // Do nothing
+    }
+
+    try {
+      const data = JSON.parse(newValue as string);
+
+      const identifier = await getIdentifier();
+
+      if (data.id !== identifier || data.type !== 'audio-devices') {
+        return;
+      }
+
+      // Get device Id of XSplitBroadcaster... which is now "Default"
+      const xsplitDevice = data.value.find((device: any) => {
+        return device.label === 'Default';
+      }) || { value: 'default' };
+
+      setItems(data.value);
+      setSelectedItem(value || xsplitDevice.value);
+      setDefaultDevice(xsplitDevice.value);
+    } catch (error) {
+      // Do nothing
+    }
+  }
 
   function handleChange(
     event: React.FormEvent<HTMLSelectElement>,

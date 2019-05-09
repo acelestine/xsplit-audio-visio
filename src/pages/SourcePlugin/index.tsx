@@ -3,6 +3,8 @@ import xjs from 'xjs-framework/dist/xjs-es2015';
 
 import useConfig from '../../hooks/useConfig';
 import usePluginInit from '../../hooks/usePluginInit';
+import * as audioDevices from '../../helpers/audio-devices';
+import { getIdentifier } from '../../helpers/identifier';
 
 const { useState, useEffect } = React;
 
@@ -23,6 +25,12 @@ const SourcePlugin = () => {
       currentSource.setMute(true);
       currentSource.setName('Audio Visualizer');
     });
+
+    window.addEventListener('storage', handleStorageEvent);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageEvent);
+    };
   }, []);
 
   useEffect(() => {
@@ -34,6 +42,37 @@ const SourcePlugin = () => {
       (item as any).saveConfig(config);
     }
   }, [config]);
+
+  async function handleStorageEvent({ newValue, key }: StorageEvent) {
+    if (key !== 'xsplit-plugin-event') {
+      return; // Do nothing
+    }
+
+    try {
+      const data = JSON.parse(newValue as string);
+
+      const identifier = await getIdentifier();
+
+      if (data.id !== identifier || data.type !== 'get-audio-devices') {
+        return;
+      }
+
+      audioDevices
+        .enumerate()
+        .then(async (devices: audioDevices.AudioDevice[]) => {
+          const identifier = await getIdentifier();
+          const obj: any = {
+            id: identifier,
+            value: devices,
+            type: 'audio-devices',
+          };
+
+          localStorage.setItem('xsplit-plugin-event', JSON.stringify(obj));
+        });
+    } catch (error) {
+      // Do nothing
+    }
+  }
 
   return <canvas id="canvas" width={1920} height={1080} />;
 };
